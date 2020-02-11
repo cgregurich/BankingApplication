@@ -5,6 +5,6 @@
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="gregurichfinalproject.MainWindowController">
    <children>
-      <Button fx:id="addCustomerButton" layoutX="204.0" layoutY="77.0" mnemonicParsing="false" text="Add Customer" />
+      <Button fx:id="addCustomerButton" layoutX="204.0" layoutY="77.0" mnemonicParsing="false" onAction="#addCustomerButtonClicked" text="Add Customer" />
    </children>
 </AnchorPane>
