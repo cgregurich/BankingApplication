@@ -19,15 +19,15 @@ public class Customer {
     */
     private String firstName;
     private String lastName;
-    private Address address;
     private String phoneNumber;
+    private Address address;
     
     public Customer(String firstName, String lastName){
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public Customer(String firstName, String lastName, Address address, String phoneNumber) {
+    public Customer(String firstName, String lastName, String phoneNumber, Address address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
