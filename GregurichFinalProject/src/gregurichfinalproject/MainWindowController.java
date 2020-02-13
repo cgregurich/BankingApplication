@@ -26,7 +26,8 @@ import javafx.stage.Stage;
  */
 public class MainWindowController implements Initializable {
     
-    @FXML Button addCustomerButton;
+    
+    @FXML Button exitButton;
 
     
     
@@ -45,6 +46,13 @@ public class MainWindowController implements Initializable {
         
         window.setScene(scene);
         window.show();
+    }
+    
+    @FXML
+    private void exitButtonClicked(){
+        Stage stage = (Stage) exitButton.getScene().getWindow();
+        
+        stage.close();
     }
             
 }

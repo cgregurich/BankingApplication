@@ -22,6 +22,25 @@ public class Customer {
     private String phoneNumber;
     private Address address;
     
+    
+    public Customer(String[] customerInfo){ //array of 7 elements
+        this.firstName = customerInfo[0];
+        this.lastName = customerInfo[1];
+        this.phoneNumber = customerInfo[2];
+        
+        //creates address object
+        String street = customerInfo[3];
+        String aptNum = customerInfo[4];
+        String city = customerInfo[5];
+        String state = customerInfo[6];
+        String zip = customerInfo[7];
+        Address a = new Address(street, aptNum, city, state, zip);
+        
+        this.address = a;
+        
+    }
+    
+    
     public Customer(String firstName, String lastName){
         this.firstName = firstName;
         this.lastName = lastName;
@@ -59,15 +78,6 @@ public class Customer {
         return this.firstName+ " " +this.lastName+ "\nAddress: " +this.address
                 +"\nPhone number: " +this.phoneNumber;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     public String getFirstName() {

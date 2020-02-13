@@ -6,12 +6,22 @@
 package gregurichfinalproject;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -26,29 +36,75 @@ public class AddCustomerWindowController implements Initializable {
     @FXML private TextField streetAddressTextField;
     @FXML private TextField secondaryAddressTextField;
     @FXML private TextField cityTextField;
-    @FXML private TextField stateTextField;
     @FXML private ComboBox stateComboBox;
     @FXML private TextField zipTextField;
+    private List<TextField> textFields = new ArrayList<>();
 
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        textFields.add(firstNameTextField);
+        textFields.add(lastNameTextField);
+        textFields.add(phoneNumberTextField);
+        textFields.add(streetAddressTextField);
+        textFields.add(secondaryAddressTextField);
+        textFields.add(cityTextField);
+        textFields.add(zipTextField);
+        
         loadStateChoiceBox();
     }   
     
     @FXML
     private void addCustomerButtonClicked(){
-        //since no db isn't set up yet
-        Customer customer = createCustomer();
-        //TESTING
-        System.out.println("New customer added: ");
-        System.out.println(customer);
+        if (isMissingFields()){
+            return;
+        }
+        
+        
+        
+        
+        
+        CustomerDAO customerDb = new CustomerDAO();
+        Customer newCustomer = createCustomer();
+        customerDb.add(newCustomer);
+    }
+    
+    private boolean isMissingFields(){
+        for (TextField field : this.textFields){
+            if (field != secondaryAddressTextField && field.getText().isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Required field missing");
+                alert.setContentText(field.getPromptText()+ " is a required field");
+                alert.showAndWait();
+                return true;
+            }
+        }
+        return false;
     }
     
     @FXML
-    private void backButtonClicked(){
-        //TODO
+    private void backButtonClicked(ActionEvent event) throws Exception{
+         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+        
+        Scene scene = new Scene(root);
+        
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        window.setScene(scene);
+        window.show();
+    }
+    
+    @FXML
+    private void clearButtonClicked(){
+        firstNameTextField.clear();
+        lastNameTextField.clear();
+        phoneNumberTextField.clear();
+        streetAddressTextField.clear();
+        secondaryAddressTextField.clear();
+        cityTextField.clear();
+        stateComboBox.valueProperty().set(null); 
+        zipTextField.clear();
+        
     }
     
     private void loadStateChoiceBox(){
@@ -79,7 +135,7 @@ public class AddCustomerWindowController implements Initializable {
         String zipCode = zipTextField.getText();
         
         Address a = new Address();
-        a.setAddress(address);
+        a.setStreetAddress(address);
         a.setAptNum(aptNum);
         a.setCity(city);
         a.setState(state);
@@ -91,5 +147,7 @@ public class AddCustomerWindowController implements Initializable {
         
         return a;
     }
+    
+    
     
 }

@@ -31,12 +31,21 @@ public class Address {
         this.state = state;
         this.zipCode = zipCode;
     }
+    
+    public Address(String address, String aptNum, String city, String state, String zipCode) {
+        this.streetAddress = address;
+        this.aptNum = aptNum;
+        this.isApartment = !this.aptNum.isEmpty();
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+    }
 
-    public String getAddress() {
+    public String getStreetAddress() {
         return streetAddress;
     }
 
-    public void setAddress(String address) {
+    public void setStreetAddress(String address) {
         this.streetAddress = address;
     }
     
