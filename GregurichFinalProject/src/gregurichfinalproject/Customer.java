@@ -114,6 +114,44 @@ public class Customer {
     }
     
     
+    public boolean equalsByValue(Customer c2){
+        if (!this.firstName.equals(c2.firstName)){
+            return false;
+        }
+        
+        if (!this.lastName.equals(c2.lastName)){
+            return false;
+        }
+        
+        if (!this.address.equalsByValue(c2.getAddress())){
+            return false;
+        }
+        
+        if (!this.phoneNumber.equals(c2.getPhoneNumber())){
+            return false;
+        }
+        
+        return true;
+        
+        
+    }
+    
+    public boolean isSameCustomer(Customer otherCustomer){
+        
+        
+        if (!this.firstName.equals(otherCustomer.getFirstName())){
+            return false;
+        }
+        
+        if(!this.lastName.equals(otherCustomer.getLastName())){
+            return false;
+        }
+        
+        
+        return false;
+    }
+    
+    
     
     
     

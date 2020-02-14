@@ -65,7 +65,6 @@ public class CustomerDAO {
     }
     
     public boolean add(Customer newCustomer){
-        //TODO!!!!!!!!!!!!!!!!!!
         if (customerAlreadyExists(newCustomer)){
             return false;
         }
@@ -97,9 +96,15 @@ public class CustomerDAO {
 
     }
     
-    public boolean customerAlreadyExists(Customer customer){
-        //TODO
+    public boolean customerAlreadyExists(Customer newCustomer){
+        for (Customer c : this.getAll()){
+            if (newCustomer.equalsByValue(c)){
+                return true;
+            }
+        }
+        
         return false;
+        
     }
     
 }

@@ -19,8 +19,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 
 /**
@@ -38,11 +38,17 @@ public class AddCustomerWindowController implements Initializable {
     @FXML private TextField cityTextField;
     @FXML private ComboBox stateComboBox;
     @FXML private TextField zipTextField;
+    
+    //TODO
+    @FXML private Label statusLabel;
+    
     private List<TextField> textFields = new ArrayList<>();
 
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        statusLabel.setText("");
+        
         textFields.add(firstNameTextField);
         textFields.add(lastNameTextField);
         textFields.add(phoneNumberTextField);
@@ -66,7 +72,14 @@ public class AddCustomerWindowController implements Initializable {
         
         CustomerDAO customerDb = new CustomerDAO();
         Customer newCustomer = createCustomer();
-        customerDb.add(newCustomer);
+        boolean isAdded = customerDb.add(newCustomer);
+        if (isAdded){
+            statusLabel.setText("Customer added!");
+        }
+        
+        else{
+            statusLabel.setText("Customer already exists!");
+        }
     }
     
     private boolean isMissingFields(){
@@ -96,6 +109,8 @@ public class AddCustomerWindowController implements Initializable {
     
     @FXML
     private void clearButtonClicked(){
+        statusLabel.setText("");
+        
         firstNameTextField.clear();
         lastNameTextField.clear();
         phoneNumberTextField.clear();

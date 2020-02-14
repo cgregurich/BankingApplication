@@ -40,6 +40,29 @@ public class Address {
         this.state = state;
         this.zipCode = zipCode;
     }
+    
+    public boolean equalsByValue(Address a2){
+        if (!this.streetAddress.equals(a2.getStreetAddress())){
+            return false;
+        }
+        
+        if (isApartment && !this.aptNum.equals(a2.getAptNum())){
+            return false;
+        }
+        
+        if (!this.city.equals(a2.getCity())){
+            return false;
+        }
+        
+        if (!this.state.equals(a2.getState())){
+            return false;
+        }
+        
+        if (!this.zipCode.equals(a2.getZipCode())){
+            return false;
+        }
+        return true;
+    }
 
     public String getStreetAddress() {
         return streetAddress;
