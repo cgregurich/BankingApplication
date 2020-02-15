@@ -1,9 +1,9 @@
 Requirements:
 Functionality:
-	stored in a DB (or txt but i mean cmon lol)
-	add customers  (open new account; one account per customer -> error)
+	~stored in a DB (or txt but i mean cmon lol)~
+	~~add customers  (open new account; one account per customer -> error)
 	search customers by first and last name (can have duplicate names, but presumably not phone or address?)	
-	step through all customer names (view them all, table view?)
+	~~step through all customer names
 	deposit
 	withdraw
 	calculate total interest for the year so far:
