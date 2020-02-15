@@ -52,6 +52,7 @@ public class ViewCustomersWindowController implements Initializable {
         cityStateZipTextField.setEditable(false);
         phoneNumberTextField.setEditable(false);
         
+        
         displayCurrentCustomer();
         
     }    
