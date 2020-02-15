@@ -64,15 +64,24 @@ public class Address {
         return true;
     }
 
-    public String getStreetAddress() {
+    public String getStreetAddress(){
         return streetAddress;
+    }
+    
+    public String getFullStreetAddress() {
+        if (isApartment){
+            return streetAddress + " #" +aptNum;
+        }
+        else{
+            return streetAddress;
+        }
     }
 
     public void setStreetAddress(String address) {
         this.streetAddress = address;
     }
     
-    
+  
     
     public String getAptNum() {
         return aptNum;

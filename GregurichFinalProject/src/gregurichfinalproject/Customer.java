@@ -22,6 +22,8 @@ public class Customer {
     private String phoneNumber;
     private Address address;
     
+    private SavingsAccount account;
+    
     
     public Customer(String[] customerInfo){ //array of 7 elements
         this.firstName = customerInfo[0];
@@ -149,6 +151,25 @@ public class Customer {
         
         
         return false;
+    }
+    
+    public SavingsAccount getAccount(){
+        return this.account;
+    }
+    
+    public String getAccountNum(){
+        if (this.account == null){
+            return null;
+        }
+        return this.account.getAccountNum();
+    }
+    
+    public void setAccountNum(String accountNum){
+        this.account.setAccountNum(accountNum);
+    }
+    
+    public void openAccount(){
+        this.account = new SavingsAccount(.01);
     }
     
     

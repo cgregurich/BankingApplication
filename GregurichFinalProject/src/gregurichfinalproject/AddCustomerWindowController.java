@@ -66,6 +66,18 @@ public class AddCustomerWindowController implements Initializable {
             return;
         }
         
+        if (!isPhoneNumberValid()){
+            return;
+        }
+        
+        if (!isStateSelected()){
+            return;
+        }
+        
+        if (!isZipCodeValid()){
+            return;
+        }
+        
         CustomerDAO customerDb = new CustomerDAO();
         Customer newCustomer = createCustomer();
         boolean isAdded = customerDb.add(newCustomer);
@@ -89,6 +101,84 @@ public class AddCustomerWindowController implements Initializable {
             }
         }
         return false;
+    }
+    
+    private boolean isStateSelected(){
+        if (stateComboBox.getValue() == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("No state selected");
+            alert.setContentText("Please select a state");
+            alert.showAndWait();
+            return false;
+        }
+        return true;
+        
+    }
+    
+    private boolean isPhoneNumberValid(){        
+        return isPhoneNumberTenDigits() && isPhoneNumberOnlyNumbers();
+    }
+    
+    private boolean isPhoneNumberOnlyNumbers(){
+        try{
+            long phoneNumberInt = Long.parseLong(phoneNumberTextField.getText());
+            
+        } catch (NumberFormatException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Invalid phone number");
+            alert.setContentText("Phone number must only contain numbers");
+            alert.showAndWait();
+            return false; 
+        }
+        
+        return true;
+        
+    }
+    
+    private boolean isPhoneNumberTenDigits(){
+        if (phoneNumberTextField.getText().length() == 10){
+            return true;
+        }
+        
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Invalid phone number");
+            alert.setContentText("Phone number must be 10 digits");
+            alert.showAndWait();
+            return false;
+        }
+    }
+    
+    private boolean isZipCodeValid(){
+        return isZipCodeOnlyNumbers() && isZipCodeFiveDigits();
+    }
+    
+    private boolean isZipCodeOnlyNumbers(){
+        try{
+            int zipCodeInt = Integer.parseInt(zipTextField.getText());
+        } catch (NumberFormatException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Invalid zip code");
+            alert.setContentText("Zip code must only contain numbers");
+            alert.showAndWait();
+            return false;
+        }
+        return true;
+    }
+    
+    private boolean isZipCodeFiveDigits(){
+        
+        if (zipTextField.getText().length() == 5){
+            return true;
+        }
+        
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Invalid zip code");
+            alert.setContentText("Zip code must be 5 digits");
+            alert.showAndWait();
+            return false;
+        }
     }
     
     @FXML
@@ -116,6 +206,11 @@ public class AddCustomerWindowController implements Initializable {
         stateComboBox.valueProperty().set(null); 
         zipTextField.clear();
         
+    }
+    
+    @FXML
+    private void clearStatusLabel(){
+        statusLabel.setText("");
     }
     
     private void loadStateChoiceBox(){
@@ -151,10 +246,6 @@ public class AddCustomerWindowController implements Initializable {
         a.setCity(city);
         a.setState(state);
         a.setZipCode(zipCode);
-        
-        //TESTING
-        System.out.println("printing out apt: ");
-        System.out.println(a.getAptNum());
         
         return a;
     }

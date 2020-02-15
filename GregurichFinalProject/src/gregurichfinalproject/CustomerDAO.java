@@ -93,7 +93,6 @@ public class CustomerDAO {
             System.err.println(e);
             return false;
         }
-
     }
     
     public boolean customerAlreadyExists(Customer newCustomer){
@@ -102,8 +101,35 @@ public class CustomerDAO {
                 return true;
             }
         }
-        
         return false;
+    }
+    
+    public void update(Customer c, String columnName){
+        String query = "UPDATE " +TABLE_NAME
+                + " SET " +columnName+ " = ?"
+                + " WHERE firstName = ? AND lastName = ?"
+                + " AND phoneNumber = ? AND streetAddress = ?"
+                + " AND aptNum = ? AND city = ? AND state = ?"
+                + " AND zip = ?";
+        try (Connection connection = getConnection();
+                PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setString(1, c.getAccountNum());
+            
+            ps.setString(2, c.getFirstName());
+            ps.setString(3, c.getLastName());
+            ps.setString(4, c.getPhoneNumber());
+            ps.setString(5, c.getAddress().getStreetAddress());
+            ps.setString(6, c.getAddress().getAptNum());
+            ps.setString(7, c.getAddress().getCity());
+            ps.setString(8, c.getAddress().getState());
+            ps.setString(9, c.getAddress().getZipCode());
+            
+            ps.executeUpdate();
+            
+        } catch (SQLException e){
+            System.err.println(e);
+        }
+                
         
     }
     

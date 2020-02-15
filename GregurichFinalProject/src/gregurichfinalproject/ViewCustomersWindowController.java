@@ -15,6 +15,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -35,10 +37,19 @@ public class ViewCustomersWindowController implements Initializable {
     private TextField cityStateZipTextField;
     @FXML
     private TextField phoneNumberTextField;
+    @FXML
+    private TextField accountNumTextField;
+    @FXML
+    private TextField balanceTextField;
+    @FXML
+    private Label statusLabel;
+    
     private CustomerDAO customerDb = new CustomerDAO();
     
     private List<Customer> customersList = customerDb.getAll();
     private int currentCustomersIndex = 0;
+    
+    private AccountDAO accountDb = new AccountDAO();
     
 
     /**
@@ -46,11 +57,15 @@ public class ViewCustomersWindowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        statusLabel.setText("");
+        
         firstNameTextField.setEditable(false);
         lastNameTextField.setEditable(false);
         addressTextField.setEditable(false);
         cityStateZipTextField.setEditable(false);
         phoneNumberTextField.setEditable(false);
+        accountNumTextField.setEditable(false);
+        balanceTextField.setEditable(false);
         
         
         displayCurrentCustomer();
@@ -70,7 +85,41 @@ public class ViewCustomersWindowController implements Initializable {
     }
     
     @FXML
+    private void openAccountButtonClicked(){
+        if (!isNewAccount()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Error opening account");
+            alert.setContentText("Current customer already has an account");
+            alert.showAndWait();   
+        }
+        
+        else{
+            Customer c = getCurrentCustomer();
+            c.openAccount();
+            balanceTextField.setDisable(false);
+            
+            accountDb.add(c.getAccount());
+            customerDb.update(c, "accountNum");
+            
+        }
+        
+        displayCurrentCustomer();
+    }
+    
+    
+    public boolean isNewAccount(){
+        Customer c = getCurrentCustomer();
+        
+        return c.getAccount() == null;
+    }
+    
+    
+    @FXML
     private void previousCustomerButtonClicked(){
+        if (customersList.isEmpty()){
+            statusLabel.setText("No customers found");
+        }
+        
         if (currentCustomersIndex == -1){
             currentCustomersIndex = 0;
         }
@@ -88,6 +137,10 @@ public class ViewCustomersWindowController implements Initializable {
     
     @FXML
     private void nextCustomerButtonClicked(){
+        if (customersList.isEmpty()){
+            statusLabel.setText("No customers found");
+        }
+        
         if (currentCustomersIndex == -1){
             currentCustomersIndex = 0;
         }
@@ -103,14 +156,39 @@ public class ViewCustomersWindowController implements Initializable {
         displayCurrentCustomer();
     }
     
-    private void displayCurrentCustomer(){
+    private Customer getCurrentCustomer(){
         Customer c = customersList.get(currentCustomersIndex);
+        return c;
+    }
+    
+    private void displayCurrentCustomer(){
+        
+        if (customersList.isEmpty()){
+            statusLabel.setText("No customers found");
+            return;
+        }
+        
+        Customer c = getCurrentCustomer();
         
         firstNameTextField.setText(c.getFirstName());
         lastNameTextField.setText(c.getLastName());
-        addressTextField.setText(c.getAddress().getStreetAddress());
+        addressTextField.setText(c.getAddress().getFullStreetAddress());
         cityStateZipTextField.setText(c.getAddress().getCityStateZip());
         phoneNumberTextField.setText(c.getPhoneNumber());
+        
+        
+        if (c.getAccount() == null){
+            accountNumTextField.setText("No account found");
+            balanceTextField.setText("");
+            balanceTextField.setDisable(true);
+        }
+        else{
+            accountNumTextField.setText(c.getAccountNum());
+            balanceTextField.setDisable(false);
+            balanceTextField.setText(c.getAccount().getBalanceFormatted());
+        }
+        
+        
     }
     
 }
