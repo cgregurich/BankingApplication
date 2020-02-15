@@ -66,10 +66,6 @@ public class AddCustomerWindowController implements Initializable {
             return;
         }
         
-        
-        
-        
-        
         CustomerDAO customerDb = new CustomerDAO();
         Customer newCustomer = createCustomer();
         boolean isAdded = customerDb.add(newCustomer);

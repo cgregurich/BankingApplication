@@ -96,6 +96,10 @@ public class Address {
     public String getState() {
         return state;
     }
+    
+    public String getCityStateZip(){
+        return city+ ", " +state+ " " +zipCode;
+    }
 
     public void setState(String state) {
         this.state = state;

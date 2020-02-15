@@ -28,6 +28,8 @@ public class MainWindowController implements Initializable {
     
     
     @FXML Button exitButton;
+    
+    
 
     
     
@@ -46,6 +48,19 @@ public class MainWindowController implements Initializable {
         
         window.setScene(scene);
         window.show();
+    }
+    
+    @FXML
+    private void viewCustomersButtonClicked(ActionEvent event) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("ViewCustomersWindow.fxml"));
+        
+        Scene scene = new Scene(root);
+        
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        window.setScene(scene);
+        window.show();
+        
     }
     
     @FXML
