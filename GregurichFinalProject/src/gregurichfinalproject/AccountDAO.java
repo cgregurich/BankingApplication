@@ -83,6 +83,25 @@ public class AccountDAO {
         }
     }
     
+    public boolean updateBalance(SavingsAccount a){
+        String query = "UPDATE " +TABLE_NAME
+                + " SET balance = ?"
+                + " WHERE accountNum = ?";
+        try (Connection connection = getConnection();
+                PreparedStatement ps = connection.prepareStatement(query)){
+            
+            ps.setDouble(1, a.getBalance());
+            ps.setString(2, a.getAccountNum());
+            ps.executeUpdate();
+            
+            return true;
+            
+        } catch (SQLException e){
+            System.err.println(e);
+            return false;
+        }
+    }
+    
     
     
     public List<String> getAllAccountNumbers(){
@@ -98,6 +117,15 @@ public class AccountDAO {
     
     public boolean isUniqueAccountNum(String acctNum){
         return !getAllAccountNumbers().contains(acctNum);
+    }
+    
+    public SavingsAccount getByAcctNum(String acctNum){
+        for (SavingsAccount a : this.getAll()){
+            if (a.getAccountNum().equals(acctNum)){
+                return a;
+            }
+        }
+        return null;
     }
     
 }

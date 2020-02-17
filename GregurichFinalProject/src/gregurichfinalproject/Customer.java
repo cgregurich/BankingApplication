@@ -22,10 +22,15 @@ public class Customer {
     private String phoneNumber;
     private Address address;
     
-    private SavingsAccount account;
     
     
-    public Customer(String[] customerInfo){ //array of 7 elements
+    
+    private String accountNum;
+    
+    private AccountDAO accountDb = new AccountDAO();
+    
+    
+    public Customer(String[] customerInfo){ //array of 8 elements
         this.firstName = customerInfo[0];
         this.lastName = customerInfo[1];
         this.phoneNumber = customerInfo[2];
@@ -37,6 +42,8 @@ public class Customer {
         String state = customerInfo[6];
         String zip = customerInfo[7];
         Address a = new Address(street, aptNum, city, state, zip);
+        
+        this.accountNum = customerInfo[8];
         
         this.address = a;
         
@@ -78,7 +85,7 @@ public class Customer {
     @Override
     public String toString(){
         return this.firstName+ " " +this.lastName+ "\nAddress: " +this.address
-                +"\nPhone number: " +this.phoneNumber;
+                +"\nPhone number: " +this.phoneNumber +"\nAccount #: " +this.accountNum;
     }
     
     
@@ -134,8 +141,6 @@ public class Customer {
         }
         
         return true;
-        
-        
     }
     
     public boolean isSameCustomer(Customer otherCustomer){
@@ -153,24 +158,22 @@ public class Customer {
         return false;
     }
     
-    public SavingsAccount getAccount(){
-        return this.account;
-    }
-    
     public String getAccountNum(){
-        if (this.account == null){
-            return null;
-        }
-        return this.account.getAccountNum();
+        return this.accountNum;
     }
     
     public void setAccountNum(String accountNum){
-        this.account.setAccountNum(accountNum);
+        this.accountNum = accountNum;
     }
     
-    public void openAccount(){
-        this.account = new SavingsAccount(.01);
+    
+    public SavingsAccount openAccount(){
+        SavingsAccount newAcct = new SavingsAccount(0.01);
+        setAccountNum(newAcct.getAccountNum());
+        return newAcct;
     }
+    
+    
     
     
     

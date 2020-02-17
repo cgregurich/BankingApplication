@@ -6,8 +6,6 @@
 package gregurichfinalproject;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -15,7 +13,6 @@ import java.util.Random;
  * @author colin
  */
 public class SavingsAccount {
-    private List<Customer> ownersList = new ArrayList<>();
     private String accountNum;
     private double balance;
     private double interestRate; //as a decimal: 1.5% = .015
@@ -34,33 +31,52 @@ public class SavingsAccount {
         this.balance = Double.parseDouble(info[1]);
         this.interestRate = Double.parseDouble(info[2]);
     }
-
-    public List<Customer> getOwnersList() {
-        return ownersList;
+    
+    public void deposit(double amount){
+        this.balance += amount;
     }
-
-    public void setOwnersList(List<Customer> ownersList) {
-        this.ownersList = ownersList;
+    
+    public boolean withdraw(double amount){
+        if (this.balance - amount >= 0.00){
+            this.balance -= amount;
+            return true;
+        }
+        
+        else{
+            return false;
+        }
     }
+    
+    
 
-    public String getAccountNum() {
-        return accountNum;
-    }
-
-    public void setAccountNum(String accountNum) {
-        this.accountNum = accountNum;
-    }
-
-    public double getBalance(){
-        return this.balance;
-    }
+   
     
     public String getBalanceFormatted() {
         NumberFormat nf = NumberFormat.getCurrencyInstance();
         return nf.format(balance);
     }
 
-    public void setBalance(double balance) {
+   
+    
+    private String generateAccountNum(){
+        Random rng = new Random();
+        String accountNum = "A";
+        boolean isUnique = false;
+        
+        while (!isUnique){
+            while (accountNum.length() < 9){
+                accountNum += rng.nextInt(10);
+            }
+            isUnique = accountDb.isUniqueAccountNum(accountNum);
+        }
+        return accountNum;
+    }
+    
+    public void assignAccountNumber(){
+        this.accountNum = generateAccountNum();
+    }
+    
+     public void setBalance(double balance) {
         this.balance = balance;
     }
 
@@ -72,22 +88,18 @@ public class SavingsAccount {
         this.interestRate = interestRate;
     }
     
-    private String generateAccountNum(){
-        Random rng = new Random();
-        String accountNum = "A";
-        boolean isUnique = false;
-        
-        while (!isUnique){
-            while (accountNum.length() < 9){
-                accountNum += rng.nextInt(9999);
-            }
-            isUnique = accountDb.isUniqueAccountNum(accountNum);
-        }
+     
+
+    public String getAccountNum() {
         return accountNum;
     }
-    
-    public void assignAccountNumber(){
-        this.accountNum = generateAccountNum();
+
+    public void setAccountNum(String accountNum) {
+        this.accountNum = accountNum;
+    }
+
+    public double getBalance(){
+        return this.balance;
     }
     
     

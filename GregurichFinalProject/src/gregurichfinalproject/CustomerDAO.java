@@ -44,7 +44,7 @@ public class CustomerDAO {
                 PreparedStatement ps = connection.prepareStatement(query);
                 ResultSet rs = ps.executeQuery()){
             
-            String[] customerInfo = new String[8];
+            String[] customerInfo = new String[9];
             
             
             //populates an array with the the info on the database
@@ -54,6 +54,7 @@ public class CustomerDAO {
                 }
                 Customer c = new Customer(customerInfo);
                 customers.add(c);
+                
             }
             
             return customers;
@@ -87,6 +88,7 @@ public class CustomerDAO {
             ps.setString(8, newCustomer.getAddress().getZipCode());
             
             ps.executeUpdate();
+            
             return true;
             
         } catch (SQLException e){
@@ -104,9 +106,9 @@ public class CustomerDAO {
         return false;
     }
     
-    public void update(Customer c, String columnName){
+    public void updateAccountNum(Customer c){
         String query = "UPDATE " +TABLE_NAME
-                + " SET " +columnName+ " = ?"
+                + " SET accountNum = ?"
                 + " WHERE firstName = ? AND lastName = ?"
                 + " AND phoneNumber = ? AND streetAddress = ?"
                 + " AND aptNum = ? AND city = ? AND state = ?"

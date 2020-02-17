@@ -33,7 +33,7 @@
             </VBox>
             <VBox prefHeight="61.0" prefWidth="550.0" spacing="10.0">
                <children>
-                  <Label text="Phone number" />
+                  <Label text="*Phone number" />
                   <TextField fx:id="phoneNumberTextField" />
                </children>
             </VBox>
@@ -51,10 +51,28 @@
             </VBox>
             <HBox alignment="CENTER" prefHeight="82.0" prefWidth="550.0" spacing="50.0">
                <children>
-                  <Button mnemonicParsing="false" text="Deposit" />
-                  <Button mnemonicParsing="false" text="Withdraw" />
-                  <Button mnemonicParsing="false" text="Update Info" />
-                  <Button mnemonicParsing="false" onAction="#openAccountButtonClicked" text="Open Account" />
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                     <children>
+                        <TextField fx:id="depositTextField" onMouseClicked="#clearStatusLabel" promptText="Enter amount" />
+                        <Button fx:id="depositButton" mnemonicParsing="false" onAction="#depositButtonClicked" text="Deposit" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                     <children>
+                        <TextField fx:id="withdrawTextField" onMouseClicked="#clearStatusLabel" promptText="Enter amount" />
+                        <Button fx:id="withdrawButton" mnemonicParsing="false" text="Withdraw" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Button mnemonicParsing="false" text="Update Info" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#openAccountButtonClicked" text="Open Account" />
+                     </children>
+                  </VBox>
                </children>
             </HBox>
          </children>

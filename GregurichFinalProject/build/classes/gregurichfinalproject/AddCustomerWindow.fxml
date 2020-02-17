@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gregurichfinalproject.AddCustomerWindowController">
    <children>
@@ -14,19 +15,24 @@
       <VBox alignment="CENTER" layoutX="-1.0" layoutY="41.0" prefHeight="561.0" prefWidth="500.0" spacing="20.0">
          <children>
             <Label fx:id="statusLabel" text="statusLabel" />
-            <TextField fx:id="firstNameTextField" onMouseClicked="#clearStatusLabel" prefHeight="25.0" prefWidth="158.0" promptText="First name" />
-            <TextField fx:id="lastNameTextField" onMouseClicked="#clearStatusLabel" promptText="Last name" />
-            <TextField fx:id="phoneNumberTextField" onMouseClicked="#clearStatusLabel" promptText="Phone number" />
-            <TextField fx:id="streetAddressTextField" onMouseClicked="#clearStatusLabel" promptText="Street address" />
+            <TextField fx:id="firstNameTextField" onMouseClicked="#clearStatusLabel" prefHeight="25.0" prefWidth="158.0" promptText="*First name" />
+            <TextField fx:id="lastNameTextField" onMouseClicked="#clearStatusLabel" promptText="*Last name" />
+            <TextField fx:id="phoneNumberTextField" onMouseClicked="#clearStatusLabel" promptText="*Phone number" />
+            <TextField fx:id="streetAddressTextField" onMouseClicked="#clearStatusLabel" promptText="*Street address" />
             <TextField fx:id="secondaryAddressTextField" onMouseClicked="#clearStatusLabel" promptText="Apartment, suite, unit, building, floor, etc." />
-            <TextField fx:id="cityTextField" onMouseClicked="#clearStatusLabel" promptText="City" />
-            <ComboBox fx:id="stateComboBox" onMouseClicked="#clearStatusLabel" prefHeight="25.0" prefWidth="489.0" promptText="Select state" />
-            <TextField fx:id="zipTextField" onMouseClicked="#clearStatusLabel" promptText="ZIP" />
+            <TextField fx:id="cityTextField" onMouseClicked="#clearStatusLabel" promptText="*City" />
+            <ComboBox fx:id="stateComboBox" onMouseClicked="#clearStatusLabel" prefHeight="25.0" prefWidth="489.0" promptText="*Select state" />
+            <TextField fx:id="zipTextField" onMouseClicked="#clearStatusLabel" promptText="*ZIP" />
             <Button mnemonicParsing="false" onAction="#addCustomerButtonClicked" text="Add Customer" />
          </children>
          <padding>
             <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
          </padding></VBox>
       <Button layoutX="426.0" layoutY="14.0" mnemonicParsing="false" onAction="#clearButtonClicked" text="Clear All" />
+      <Label layoutX="194.0" layoutY="19.0" text="* denotes a required field">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

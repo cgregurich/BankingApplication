@@ -16,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -50,6 +51,17 @@ public class ViewCustomersWindowController implements Initializable {
     private int currentCustomersIndex = 0;
     
     private AccountDAO accountDb = new AccountDAO();
+    private List<SavingsAccount> accountsList = accountDb.getAll();
+    
+    
+    @FXML
+    private TextField depositTextField;
+    @FXML
+    private Button depositButton;
+    @FXML
+    private TextField withdrawTextField;
+    @FXML
+    private Button withdrawButton;
     
 
     /**
@@ -67,10 +79,13 @@ public class ViewCustomersWindowController implements Initializable {
         accountNumTextField.setEditable(false);
         balanceTextField.setEditable(false);
         
-        
         displayCurrentCustomer();
-        
     }    
+    
+    @FXML
+    private void clearStatusLabel(){
+        statusLabel.setText("");
+    }
     
     @FXML
     private void backButtonClicked(ActionEvent event) throws Exception{
@@ -86,31 +101,32 @@ public class ViewCustomersWindowController implements Initializable {
     
     @FXML
     private void openAccountButtonClicked(){
-        if (!isNewAccount()){
+        
+        
+        //customer already has an account
+        if (isAccountOwner()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Error opening account");
             alert.setContentText("Current customer already has an account");
             alert.showAndWait();   
         }
         
+        //customer doesn't have an account
         else{
             Customer c = getCurrentCustomer();
-            c.openAccount();
-            balanceTextField.setDisable(false);
+            SavingsAccount newAcct = c.openAccount();
             
-            accountDb.add(c.getAccount());
-            customerDb.update(c, "accountNum");
-            
+            accountDb.add(newAcct);
+            customerDb.updateAccountNum(c);
         }
         
         displayCurrentCustomer();
     }
     
     
-    public boolean isNewAccount(){
+    public boolean isAccountOwner(){
         Customer c = getCurrentCustomer();
-        
-        return c.getAccount() == null;
+        return !(c.getAccountNum() == null);
     }
     
     
@@ -168,7 +184,7 @@ public class ViewCustomersWindowController implements Initializable {
             return;
         }
         
-        Customer c = getCurrentCustomer();
+        Customer c = getCurrentCustomer();        
         
         firstNameTextField.setText(c.getFirstName());
         lastNameTextField.setText(c.getLastName());
@@ -176,19 +192,95 @@ public class ViewCustomersWindowController implements Initializable {
         cityStateZipTextField.setText(c.getAddress().getCityStateZip());
         phoneNumberTextField.setText(c.getPhoneNumber());
         
-        
-        if (c.getAccount() == null){
-            accountNumTextField.setText("No account found");
-            balanceTextField.setText("");
-            balanceTextField.setDisable(true);
-        }
-        else{
-            accountNumTextField.setText(c.getAccountNum());
+        if (isAccountOwner()){
+            SavingsAccount fetchedAcct = fetchAccountByAcctNum(c.getAccountNum());
+            accountNumTextField.setText(fetchedAcct.getAccountNum());
+            balanceTextField.setText(fetchedAcct.getBalanceFormatted());
+            accountNumTextField.setDisable(false);
             balanceTextField.setDisable(false);
-            balanceTextField.setText(c.getAccount().getBalanceFormatted());
+            depositTextField.setDisable(false);
+            withdrawTextField.setDisable(false);
+            depositButton.setDisable(false);
+            withdrawButton.setDisable(false);
+            
         }
         
         
+        else{
+            accountNumTextField.setText("No account found");
+            balanceTextField.setText("No account found");
+            accountNumTextField.setDisable(true);
+            balanceTextField.setDisable(true);
+            depositTextField.setDisable(true);
+            withdrawTextField.setDisable(true);
+            depositButton.setDisable(true);
+            withdrawButton.setDisable(true);
+            
+        }
     }
+    
+    private SavingsAccount fetchAccountByAcctNum(String acctNum){
+        refreshAccountsList();
+        
+        for (SavingsAccount a : accountsList){
+            
+            if (a.getAccountNum().equals(acctNum)){
+                return a;
+            }
+        }
+        return null;
+    }
+    
+    private void refreshAccountsList(){
+        this.accountsList = accountDb.getAll();
+    }
+    
+    @FXML
+    private void depositButtonClicked(){
+        //check if entry is valid
+        if (isDepositValid()){
+            Double amount = Double.parseDouble(depositTextField.getText());
+            if (depositToAccount(amount)){
+                refreshAccountsList();
+                statusLabel.setText("Deposit successful");
+                displayCurrentCustomer();
+                clearDepositAndWithdrawFields();
+            }
+            else{
+                System.out.println("Deposit failed");
+            }
+        }
+    }
+    
+    private boolean isDepositValid(){
+        String depositStr = depositTextField.getText();
+        try{
+            double deposit = Double.parseDouble(depositStr);
+        } catch (NumberFormatException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Invalid deposit amount");
+            alert.setContentText("Deposit amount must be in decimal format");
+            alert.showAndWait();
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private boolean depositToAccount(Double amount){
+        Customer c = getCurrentCustomer();
+        
+        SavingsAccount curAcct = fetchAccountByAcctNum(c.getAccountNum());
+        curAcct.deposit(amount);
+        return accountDb.updateBalance(curAcct);
+    }
+    
+    
+    private void clearDepositAndWithdrawFields(){
+        depositTextField.setText("");
+        withdrawTextField.setText("");
+    }
+    
+    
     
 }
