@@ -41,6 +41,7 @@ public class Address {
         this.zipCode = zipCode;
     }
     
+    
     public boolean equalsByValue(Address a2){
         if (!this.streetAddress.equals(a2.getStreetAddress())){
             return false;

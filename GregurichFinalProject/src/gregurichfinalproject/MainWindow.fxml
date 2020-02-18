@@ -8,6 +8,5 @@
       <Button layoutX="204.0" layoutY="122.0" mnemonicParsing="false" onAction="#addCustomerButtonClicked" text="Add Customer" />
       <Button fx:id="exitButton" layoutX="217.0" layoutY="507.0" mnemonicParsing="false" onAction="#exitButtonClicked" prefHeight="25.0" prefWidth="66.0" text="Exit" />
       <Button layoutX="200.0" layoutY="268.0" mnemonicParsing="false" onAction="#viewCustomersButtonClicked" text="View Customers" />
-      <Button layoutX="195.0" layoutY="386.0" mnemonicParsing="false" onAction="#searchCustomersButtonClicked" text="Search Customers" />
    </children>
 </AnchorPane>

@@ -5,9 +5,13 @@
  */
 package gregurichfinalproject;
 
+
+import java.math.BigDecimal;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -27,6 +32,17 @@ import javafx.stage.Stage;
  * @author colin
  */
 public class ViewCustomersWindowController implements Initializable {
+    
+    
+    @FXML
+    private Label statusLabel;
+    @FXML
+    private Label amountLabel;
+    
+    @FXML
+    private Button previousButton;
+    @FXML
+    private Button nextButton;
     
     @FXML
     private TextField firstNameTextField;
@@ -42,8 +58,9 @@ public class ViewCustomersWindowController implements Initializable {
     private TextField accountNumTextField;
     @FXML
     private TextField balanceTextField;
-    @FXML
-    private Label statusLabel;
+    
+    
+    
     
     private CustomerDAO customerDb = new CustomerDAO();
     
@@ -58,10 +75,35 @@ public class ViewCustomersWindowController implements Initializable {
     private TextField depositTextField;
     @FXML
     private Button depositButton;
+    
     @FXML
     private TextField withdrawTextField;
     @FXML
     private Button withdrawButton;
+    
+    @FXML
+    private Button openAccountButton;
+    
+    @FXML
+    private Button updateInfoButton;
+    
+    
+    //nodes for UpdateInfo Window
+    @FXML
+    private TextField streetAddressTextField;
+    @FXML
+    private TextField aptNumTextField;
+    @FXML
+    private TextField cityTextField;
+    @FXML
+    private ComboBox stateComboBox;
+    @FXML
+    private TextField zipTextField;
+    @FXML
+    private Button saveButton;
+    @FXML
+    private Button discardButton;
+    
     
 
     /**
@@ -70,7 +112,7 @@ public class ViewCustomersWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         statusLabel.setText("");
-        
+        amountLabel.setText("");
         firstNameTextField.setEditable(false);
         lastNameTextField.setEditable(false);
         addressTextField.setEditable(false);
@@ -79,17 +121,18 @@ public class ViewCustomersWindowController implements Initializable {
         accountNumTextField.setEditable(false);
         balanceTextField.setEditable(false);
         
+        saveButton.setVisible(false);
+        discardButton.setVisible(false);
+        
+        
         displayCurrentCustomer();
     }    
     
-    @FXML
-    private void clearStatusLabel(){
-        statusLabel.setText("");
-    }
+    
     
     @FXML
     private void backButtonClicked(ActionEvent event) throws Exception{
-         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
         
         Scene scene = new Scene(root);
         
@@ -172,6 +215,10 @@ public class ViewCustomersWindowController implements Initializable {
         displayCurrentCustomer();
     }
     
+    private void refreshCustomerList(){
+        this.customersList = customerDb.getAll();
+    }
+    
     private Customer getCurrentCustomer(){
         Customer c = customersList.get(currentCustomersIndex);
         return c;
@@ -193,9 +240,9 @@ public class ViewCustomersWindowController implements Initializable {
         phoneNumberTextField.setText(c.getPhoneNumber());
         
         if (isAccountOwner()){
-            SavingsAccount fetchedAcct = fetchAccountByAcctNum(c.getAccountNum());
-            accountNumTextField.setText(fetchedAcct.getAccountNum());
-            balanceTextField.setText(fetchedAcct.getBalanceFormatted());
+            SavingsAccount curAcct = getCurrentAccount();
+            accountNumTextField.setText(curAcct.getAccountNum());
+            balanceTextField.setText(curAcct.getBalanceFormatted());
             accountNumTextField.setDisable(false);
             balanceTextField.setDisable(false);
             depositTextField.setDisable(false);
@@ -220,6 +267,7 @@ public class ViewCustomersWindowController implements Initializable {
     }
     
     private SavingsAccount fetchAccountByAcctNum(String acctNum){
+        
         refreshAccountsList();
         
         for (SavingsAccount a : accountsList){
@@ -231,55 +279,272 @@ public class ViewCustomersWindowController implements Initializable {
         return null;
     }
     
+    private SavingsAccount getCurrentAccount(){
+        Customer c = getCurrentCustomer();
+        SavingsAccount a = fetchAccountByAcctNum(c.getAccountNum());
+        return a;
+    }
+    
     private void refreshAccountsList(){
         this.accountsList = accountDb.getAll();
     }
     
     @FXML
+    private void withdrawButtonClicked(){
+        if (isWithdrawNumber()){
+            Double amount = Double.parseDouble(withdrawTextField.getText());
+            if (isWithdrawValid(amount)){
+                refreshAccountsList();
+                statusLabel.setText("Withdrawal successful!");
+                amountLabel.setText("Amount: " +formatAmount(amount));
+                displayCurrentCustomer();
+                clearDepositAndWithdrawFields();
+            }
+            
+        }   
+    }
+    
+    private boolean isWithdrawValid(Double amount){
+        return isAmountValid(amount) && !isAmountZero(amount) && withdrawFromAccount(amount);
+    }
+    
+    private boolean withdrawFromAccount(Double amount){
+        SavingsAccount curAcct = getCurrentAccount();
+        if (curAcct.withdraw(amount)){
+            return accountDb.updateBalance(curAcct);
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Withdrawal failed");
+            alert.setContentText("Insufficient funds");
+            alert.showAndWait();
+            return false;
+        }
+    }
+    
+    
+    
+    private boolean isWithdrawNumber(){
+        String withdrawStr = withdrawTextField.getText();
+        try{
+            Double withdraw = Double.parseDouble(withdrawStr);
+            return true;
+        } catch (NumberFormatException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Invalid withdraw amount");
+            alert.setContentText("Withdraw amount must be in valid currency format");
+            alert.showAndWait();
+            return false;
+        }
+    }
+    
+    @FXML
     private void depositButtonClicked(){
         //check if entry is valid
-        if (isDepositValid()){
+        if (isDepositNumber()){ 
             Double amount = Double.parseDouble(depositTextField.getText());
-            if (depositToAccount(amount)){
+            if (isDepositValid(amount)){
                 refreshAccountsList();
-                statusLabel.setText("Deposit successful");
+                statusLabel.setText("Deposit successful!");
+                amountLabel.setText("Amount: " +formatAmount(amount));
+                
                 displayCurrentCustomer();
                 clearDepositAndWithdrawFields();
             }
             else{
-                System.out.println("Deposit failed");
+                statusLabel.setText("Deposit failed");
             }
         }
     }
     
-    private boolean isDepositValid(){
+    private boolean isDepositValid(Double amount){
+        return isAmountValid(amount) && !isAmountZero(amount) && depositToAccount(amount);
+    }
+    
+    private boolean isDepositNumber(){
         String depositStr = depositTextField.getText();
         try{
             double deposit = Double.parseDouble(depositStr);
         } catch (NumberFormatException e){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Invalid deposit amount");
-            alert.setContentText("Deposit amount must be in decimal format");
+            alert.setContentText("Deposit amount must be in valid currency format");
             alert.showAndWait();
             return false;
         }
-        
+       
         return true;
     }
     
     private boolean depositToAccount(Double amount){
-        Customer c = getCurrentCustomer();
-        
-        SavingsAccount curAcct = fetchAccountByAcctNum(c.getAccountNum());
+        SavingsAccount curAcct = getCurrentAccount();
         curAcct.deposit(amount);
         return accountDb.updateBalance(curAcct);
     }
     
+    private String formatAmount(Double amount){
+        NumberFormat nf = NumberFormat.getCurrencyInstance();
+        return nf.format(amount);
+    }
+    
+    
+    @FXML
+    private void clearLabels(){
+        statusLabel.setText("");
+        amountLabel.setText("");
+    }
+    
+    private void clearAmountLabel(){
+        amountLabel.setText("");
+    }
     
     private void clearDepositAndWithdrawFields(){
         depositTextField.setText("");
         withdrawTextField.setText("");
     }
+    
+    
+    @FXML
+    private void clearLabelsAndFields(){
+        clearLabels();
+        clearAmountLabel();
+        clearDepositAndWithdrawFields();
+    }
+    
+    private boolean isAmountValid(Double amount){
+        if (BigDecimal.valueOf(amount).scale() <= 2){
+            return true;
+        }
+       
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Invalid deposit amount");
+            alert.setContentText("Deposit amount must be in valid currency format");
+            alert.showAndWait();
+            return false;
+        }
+    }
+    
+    private boolean isAmountZero(Double amount){
+        if (amount == 0){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Invalid deposit amount");
+            alert.setContentText("Amount must can't be 0.");
+            alert.showAndWait();
+            return true;
+        }
+        return false;
+    }
+    
+    @FXML
+    private void updateInfoButtonClicked(ActionEvent event) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("UpdateInfoWindow.fxml"));
+        
+        Scene scene = new Scene(root);
+        
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        window.setScene(scene);
+        window.show();
+        
+        //populateUpdateInfoWindow();
+
+        //closeUneditableNodes(); maybe wont need these cuz new window
+        //openEditableNodes();
+        
+    }
+    
+    private void populateUpdateInfoWindow(){
+        Customer c = getCurrentCustomer();
+        firstNameTextField.setText(c.getFirstName());
+        lastNameTextField.setText(c.getLastName());
+        phoneNumberTextField.setText(c.getPhoneNumber());
+        streetAddressTextField.setText(c.getAddress().getStreetAddress());
+        aptNumTextField.setText(c.getAddress().getAptNum());
+        cityTextField.setText(c.getAddress().getCity());
+        
+        loadStateChoiceBox();
+        stateComboBox.setValue(c.getAddress().getState()); //prob need to cast to enum State
+        zipTextField.setText(c.getAddress().getZipCode());
+        
+    }
+    
+    private void loadStateChoiceBox(){
+        stateComboBox.setItems(FXCollections.observableArrayList(State.values()));
+    }
+    
+    private void closeUneditableNodes(){
+        accountNumTextField.setDisable(true);
+        balanceTextField.setDisable(true);
+        depositTextField.setDisable(true);
+        withdrawTextField.setDisable(true);
+        depositButton.setDisable(true);
+        withdrawButton.setDisable(true);
+        openAccountButton.setDisable(true);
+        updateInfoButton.setDisable(true);
+        previousButton.setDisable(true);
+        nextButton.setDisable(true);
+        
+    }
+    
+    private void openEditableNodes(){
+        firstNameTextField.setEditable(true);
+        lastNameTextField.setEditable(true);
+        addressTextField.setEditable(true);
+        cityStateZipTextField.setEditable(true);
+        phoneNumberTextField.setEditable(true);
+        saveButton.setVisible(true);
+        discardButton.setVisible(true);
+    }
+    
+    
+    private void closeUpdateInfo(){
+        accountNumTextField.setDisable(false);
+        balanceTextField.setDisable(false);
+        depositTextField.setDisable(false);
+        withdrawTextField.setDisable(false);
+        depositButton.setDisable(false);
+        withdrawButton.setDisable(false);
+        openAccountButton.setDisable(false);
+        addressTextField.setEditable(false);
+        cityStateZipTextField.setEditable(false);
+        phoneNumberTextField.setEditable(false);
+        saveButton.setVisible(false);
+        discardButton.setVisible(false);
+    }
+    
+    @FXML
+    private void saveButtonClicked(){
+        Customer c = getCurrentCustomer();
+        
+        //TESTING TESTING TESTING
+        System.out.println("c: ");
+        System.out.println(c);
+        
+    }
+    
+    private void updateCurrentCustomer(){
+        Customer c = getCurrentCustomer();
+        
+    }
+    
+    //TESTING not void
+    private void generateCustomerFromFields(){
+        Customer c = new Customer();
+        c.setFirstName(firstNameTextField.getText());
+        c.setLastName(lastNameTextField.getText());
+        Address a = new Address();
+        
+        a.setStreetAddress(addressTextField.getText());
+        a.setAptNum(this.cityStateZipTextField.getText());
+       /*
+        a.setCity(city);
+        a.setState();
+        a.setZipCode();
+*/
+    }
+
+    
     
     
     

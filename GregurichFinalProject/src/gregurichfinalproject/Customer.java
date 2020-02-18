@@ -29,6 +29,10 @@ public class Customer {
     
     private AccountDAO accountDb = new AccountDAO();
     
+    public Customer(){
+        
+    }
+    
     
     public Customer(String[] customerInfo){ //array of 8 elements
         this.firstName = customerInfo[0];

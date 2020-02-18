@@ -131,8 +131,33 @@ public class CustomerDAO {
         } catch (SQLException e){
             System.err.println(e);
         }
-                
-        
+    }
+    
+    public void updateCustomer(Customer c){
+        String query = "UPDATE " +TABLE_NAME
+                + " SET firstName = ?, lastName = ?, phoneNumber = ?, "
+                + " streetAddress = ?, aptNum = ?, city = ?, state = ?, zip = ?"
+                + " WHERE accountNum = ?";
+        try (Connection connection = getConnection();
+                PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setString(1, c.getFirstName());
+            ps.setString(2, c.getLastName());
+            ps.setString(3, c.getPhoneNumber());
+            
+            Address a = c.getAddress();
+            
+            ps.setString(4, a.getStreetAddress());
+            ps.setString(5, a.getAptNum());
+            ps.setString(6, a.getCity());
+            ps.setString(7, a.getState());
+            ps.setString(8, a.getZipCode());
+            
+            ps.setString(9, c.getAccountNum());
+            ps.executeUpdate();
+            
+        } catch (SQLException e){
+            System.err.println(e);
+        }
     }
     
 }

@@ -33,7 +33,7 @@
             </VBox>
             <VBox prefHeight="61.0" prefWidth="550.0" spacing="10.0">
                <children>
-                  <Label text="*Phone number" />
+                  <Label text="Phone number" />
                   <TextField fx:id="phoneNumberTextField" />
                </children>
             </VBox>
@@ -53,24 +53,26 @@
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
-                        <TextField fx:id="depositTextField" onMouseClicked="#clearStatusLabel" promptText="Enter amount" />
+                        <TextField fx:id="depositTextField" onMouseClicked="#clearLabels" promptText="Enter amount" />
                         <Button fx:id="depositButton" mnemonicParsing="false" onAction="#depositButtonClicked" text="Deposit" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
-                        <TextField fx:id="withdrawTextField" onMouseClicked="#clearStatusLabel" promptText="Enter amount" />
-                        <Button fx:id="withdrawButton" mnemonicParsing="false" text="Withdraw" />
+                        <TextField fx:id="withdrawTextField" onMouseClicked="#clearLabels" promptText="Enter amount" />
+                        <Button fx:id="withdrawButton" mnemonicParsing="false" onAction="#withdrawButtonClicked" text="Withdraw" />
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Update Info" />
+                        <Button fx:id="openAccountButton" mnemonicParsing="false" onAction="#openAccountButtonClicked" text="Open Account" />
+                        <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveButtonClicked" text="Save " />
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#openAccountButtonClicked" text="Open Account" />
+                        <Button fx:id="updateInfoButton" mnemonicParsing="false" onAction="#updateInfoButtonClicked" text="Update Info" />
+                        <Button fx:id="discardButton" mnemonicParsing="false" text="Discard" />
                      </children>
                   </VBox>
                </children>
@@ -81,8 +83,13 @@
          </padding>
       </VBox>
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" />
-      <Button layoutX="473.0" layoutY="14.0" mnemonicParsing="false" onAction="#previousCustomerButtonClicked" prefWidth="61.0" text="Previous" />
-      <Button layoutX="545.0" layoutY="14.0" mnemonicParsing="false" onAction="#nextCustomerButtonClicked" text="Next" />
-      <Label fx:id="statusLabel" layoutX="270.0" layoutY="55.0" text="statusLabel" />
+      <Button fx:id="previousButton" layoutX="473.0" layoutY="14.0" mnemonicParsing="false" onAction="#previousCustomerButtonClicked" onMouseClicked="#clearLabelsAndFields" prefWidth="61.0" text="Previous" />
+      <Button fx:id="nextButton" layoutX="545.0" layoutY="14.0" mnemonicParsing="false" onAction="#nextCustomerButtonClicked" onMouseClicked="#clearLabelsAndFields" text="Next" />
+      <VBox alignment="CENTER" layoutX="159.0" layoutY="39.0" prefHeight="38.0" prefWidth="283.0" spacing="10.0">
+         <children>
+            <Label fx:id="statusLabel" text="statusLabel" />
+            <Label fx:id="amountLabel" text="amountLabel" />
+         </children>
+      </VBox>
    </children>
 </AnchorPane>
