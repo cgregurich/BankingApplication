@@ -436,21 +436,26 @@ public class ViewCustomersWindowController implements Initializable {
         return false;
     }
     
+    
+    
     @FXML
     private void updateInfoButtonClicked(ActionEvent event) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("UpdateInfoWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("UpdateInfoWindow.fxml"));
+        Parent root = loader.load();
         
         Scene scene = new Scene(root);
+        
+        UpdateInfoWindowController controller = loader.getController();
+        Customer c = getCurrentCustomer(); //TESTING
+        controller.initData(c);
         
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         
         window.setScene(scene);
         window.show();
         
-        //populateUpdateInfoWindow();
-
-        //closeUneditableNodes(); maybe wont need these cuz new window
-        //openEditableNodes();
+        
         
     }
     
