@@ -106,6 +106,7 @@ public class ViewCustomersWindowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         statusLabel.setText("");
         amountLabel.setText("");
         firstNameTextField.setEditable(false);
