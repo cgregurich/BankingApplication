@@ -35,6 +35,9 @@ public class CustomerDAO {
         }
     }
     
+    /*
+    returns a list of Customer objects in the database Customers
+    */
     public List<Customer> getAll(){
         String query = "SELECT * from " +TABLE_NAME;
         
@@ -52,6 +55,7 @@ public class CustomerDAO {
                 for (int i = 0; i < customerInfo.length; i++){
                     customerInfo[i] = rs.getString(i+1);
                 }
+                //array used to initialize a Customer object
                 Customer c = new Customer(customerInfo);
                 customers.add(c);
                 
@@ -65,6 +69,10 @@ public class CustomerDAO {
         }
     }
     
+    /*
+    adds the param Customer to the database. Returns true if it went with no issues
+    Returns false if an exception occurred
+    */
     public boolean add(Customer newCustomer){
         if (customerAlreadyExists(newCustomer)){
             return false;
@@ -97,6 +105,13 @@ public class CustomerDAO {
         }
     }
     
+    /*
+    returns a boolean based on if the param Customer exists inside the DB already
+    by comparing each customer in the list of Customers in the DB by value to the 
+    parameter
+    In other words, no Customer can share first name, last name, phone, and address
+    They can share some but not all
+    */
     public boolean customerAlreadyExists(Customer newCustomer){
         for (Customer c : this.getAll()){
             if (newCustomer.equalsByValue(c)){
@@ -106,6 +121,12 @@ public class CustomerDAO {
         return false;
     }
     
+    /*
+    Since account nums for Customers are set to null by default, this method
+    is used to change that value once an account has been opened for the Customer
+    It finds the Customer in the DB where all info matches that of the param Customer
+    and then changes the accountNum field to that of the param's accountNum
+    */
     public void updateAccountNum(Customer c){
         String query = "UPDATE " +TABLE_NAME
                 + " SET accountNum = ?"
@@ -133,7 +154,13 @@ public class CustomerDAO {
         }
     }
     
-    public void updateCustomer(Customer c){
+    /*
+    Uses the param Customer's account number as a referemce point, and then updates
+    all fields with their information, whether or not the information is different
+    Using the account number as a reference is why Customers who don't have an account
+    can't update their information in the program
+    */
+    public boolean updateCustomer(Customer c){
         String query = "UPDATE " +TABLE_NAME
                 + " SET firstName = ?, lastName = ?, phoneNumber = ?, "
                 + " streetAddress = ?, aptNum = ?, city = ?, state = ?, zip = ?"
@@ -154,9 +181,11 @@ public class CustomerDAO {
             
             ps.setString(9, c.getAccountNum());
             ps.executeUpdate();
+            return true;
             
         } catch (SQLException e){
             System.err.println(e);
+            return false;
         }
     }
     

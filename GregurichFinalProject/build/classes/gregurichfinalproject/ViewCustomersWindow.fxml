@@ -63,16 +63,15 @@
                         <Button fx:id="withdrawButton" mnemonicParsing="false" onAction="#withdrawButtonClicked" text="Withdraw" />
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                  <VBox alignment="CENTER" prefHeight="81.0" prefWidth="108.0" spacing="10.0">
                      <children>
                         <Button fx:id="openAccountButton" mnemonicParsing="false" onAction="#openAccountButtonClicked" text="Open Account" />
-                        <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveButtonClicked" text="Save " />
+                        <Button fx:id="updateInfoButton" mnemonicParsing="false" onAction="#updateInfoButtonClicked" text="Update Info" />
                      </children>
                   </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                  <VBox alignment="CENTER" prefHeight="81.0" prefWidth="155.0" spacing="10.0">
                      <children>
-                        <Button fx:id="updateInfoButton" mnemonicParsing="false" onAction="#updateInfoButtonClicked" text="Update Info" />
-                        <Button fx:id="discardButton" mnemonicParsing="false" text="Discard" />
+                        <Button mnemonicParsing="false" onAction="#calculateInterestButtonClicked" text="Calculate Interest" />
                      </children>
                   </VBox>
                </children>

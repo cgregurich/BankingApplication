@@ -42,6 +42,10 @@ public class Address {
     }
     
     
+    /*
+    Returns a boolean based on the values of two address objects
+    Checks values of: street address, apt number, city, state, and zipcode
+    */
     public boolean equalsByValue(Address a2){
         if (!this.streetAddress.equals(a2.getStreetAddress())){
             return false;
@@ -69,6 +73,10 @@ public class Address {
         return streetAddress;
     }
     
+    /*
+    returns street address and the apt num (if there is an apt number)
+    Helps with the output in ViewCustomersWindow
+    */
     public String getFullStreetAddress() {
         if (isApartment){
             return streetAddress + " #" +aptNum;

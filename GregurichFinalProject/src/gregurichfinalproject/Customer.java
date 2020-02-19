@@ -34,6 +34,10 @@ public class Customer {
     }
     
     
+    /*
+    creates a Customer obj from a String arr parameter
+    Used to easily create Customers in the CustomerDAO class
+    */
     public Customer(String[] customerInfo){ //array of 8 elements
         this.firstName = customerInfo[0];
         this.lastName = customerInfo[1];
@@ -64,10 +68,14 @@ public class Customer {
         this.lastName = lastName;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.phoneNumber = putHyphensInPhoneNumber();
+        this.phoneNumber = hyphenatePhoneNumber();
     }
     
-    private String putHyphensInPhoneNumber(){
+    /*
+    Formats var phoneNumber to have hyphens in the typical format
+    i.e. XXX-XXX-XXXX
+    */
+    private String hyphenatePhoneNumber(){
         if (this.phoneNumber == null){
             return null;
         }
@@ -85,7 +93,10 @@ public class Customer {
         
         return formatted;
     }
+    
+    
 
+    
     @Override
     public String toString(){
         return this.firstName+ " " +this.lastName+ "\nAddress: " +this.address
@@ -123,10 +134,15 @@ public class Customer {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-        this.phoneNumber = putHyphensInPhoneNumber();
+        this.phoneNumber = hyphenatePhoneNumber();
     }
     
     
+    /*
+    Returns a boolean based on the values of two customer objects
+    Checks values of: first name, last name, phone, and address
+    Not account number because no two Customers will have the same acct num
+    */
     public boolean equalsByValue(Customer c2){
         if (!this.firstName.equals(c2.firstName)){
             return false;
@@ -147,20 +163,6 @@ public class Customer {
         return true;
     }
     
-    public boolean isSameCustomer(Customer otherCustomer){
-        
-        
-        if (!this.firstName.equals(otherCustomer.getFirstName())){
-            return false;
-        }
-        
-        if(!this.lastName.equals(otherCustomer.getLastName())){
-            return false;
-        }
-        
-        
-        return false;
-    }
     
     public String getAccountNum(){
         return this.accountNum;
@@ -170,7 +172,10 @@ public class Customer {
         this.accountNum = accountNum;
     }
     
-    
+    /*
+    Creates a SavingsAccount obj and initializes it to the starting interest rate
+    of 1%. Then sets this account number to the number of the created SavingsAccount obj
+    */
     public SavingsAccount openAccount(){
         SavingsAccount newAcct = new SavingsAccount(0.01);
         setAccountNum(newAcct.getAccountNum());

@@ -88,22 +88,17 @@ public class ViewCustomersWindowController implements Initializable {
     private Button updateInfoButton;
     
     
-    //nodes for UpdateInfo Window
-    @FXML
-    private TextField streetAddressTextField;
-    @FXML
-    private TextField aptNumTextField;
-    @FXML
-    private TextField cityTextField;
-    @FXML
-    private ComboBox stateComboBox;
-    @FXML
-    private TextField zipTextField;
-    @FXML
-    private Button saveButton;
-    @FXML
-    private Button discardButton;
     
+   
+    public void initData(Customer currentCustomer){
+        for (Customer c : customersList){
+            if (c.getAccountNum().equals(currentCustomer.getAccountNum())){
+                this.currentCustomersIndex = this.customersList.indexOf(c);
+            }
+        }
+        
+        displayCurrentCustomer();
+    }
     
 
     /**
@@ -121,11 +116,8 @@ public class ViewCustomersWindowController implements Initializable {
         accountNumTextField.setEditable(false);
         balanceTextField.setEditable(false);
         
-        saveButton.setVisible(false);
-        discardButton.setVisible(false);
-        
-        
         displayCurrentCustomer();
+        
     }    
     
     
@@ -249,6 +241,7 @@ public class ViewCustomersWindowController implements Initializable {
             withdrawTextField.setDisable(false);
             depositButton.setDisable(false);
             withdrawButton.setDisable(false);
+            this.openAccountButton.setDisable(true);
             
         }
         
@@ -262,6 +255,7 @@ public class ViewCustomersWindowController implements Initializable {
             withdrawTextField.setDisable(true);
             depositButton.setDisable(true);
             withdrawButton.setDisable(true);
+            this.openAccountButton.setDisable(false);
             
         }
     }
@@ -436,10 +430,16 @@ public class ViewCustomersWindowController implements Initializable {
         return false;
     }
     
-    
-    
     @FXML
     private void updateInfoButtonClicked(ActionEvent event) throws Exception{
+        if (!this.isAccountOwner()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Error updating info");
+            alert.setContentText("Only account owners can update info");
+            alert.showAndWait();
+            return;
+        }
+        
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("UpdateInfoWindow.fxml"));
         Parent root = loader.load();
@@ -447,110 +447,32 @@ public class ViewCustomersWindowController implements Initializable {
         Scene scene = new Scene(root);
         
         UpdateInfoWindowController controller = loader.getController();
-        Customer c = getCurrentCustomer(); //TESTING
+        Customer c = getCurrentCustomer(); 
         controller.initData(c);
         
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         
         window.setScene(scene);
         window.show();
-        
-        
-        
-    }
-    
-    private void populateUpdateInfoWindow(){
-        Customer c = getCurrentCustomer();
-        firstNameTextField.setText(c.getFirstName());
-        lastNameTextField.setText(c.getLastName());
-        phoneNumberTextField.setText(c.getPhoneNumber());
-        streetAddressTextField.setText(c.getAddress().getStreetAddress());
-        aptNumTextField.setText(c.getAddress().getAptNum());
-        cityTextField.setText(c.getAddress().getCity());
-        
-        loadStateChoiceBox();
-        stateComboBox.setValue(c.getAddress().getState()); //prob need to cast to enum State
-        zipTextField.setText(c.getAddress().getZipCode());
-        
-    }
-    
-    private void loadStateChoiceBox(){
-        stateComboBox.setItems(FXCollections.observableArrayList(State.values()));
-    }
-    
-    private void closeUneditableNodes(){
-        accountNumTextField.setDisable(true);
-        balanceTextField.setDisable(true);
-        depositTextField.setDisable(true);
-        withdrawTextField.setDisable(true);
-        depositButton.setDisable(true);
-        withdrawButton.setDisable(true);
-        openAccountButton.setDisable(true);
-        updateInfoButton.setDisable(true);
-        previousButton.setDisable(true);
-        nextButton.setDisable(true);
-        
-    }
-    
-    private void openEditableNodes(){
-        firstNameTextField.setEditable(true);
-        lastNameTextField.setEditable(true);
-        addressTextField.setEditable(true);
-        cityStateZipTextField.setEditable(true);
-        phoneNumberTextField.setEditable(true);
-        saveButton.setVisible(true);
-        discardButton.setVisible(true);
-    }
-    
-    
-    private void closeUpdateInfo(){
-        accountNumTextField.setDisable(false);
-        balanceTextField.setDisable(false);
-        depositTextField.setDisable(false);
-        withdrawTextField.setDisable(false);
-        depositButton.setDisable(false);
-        withdrawButton.setDisable(false);
-        openAccountButton.setDisable(false);
-        addressTextField.setEditable(false);
-        cityStateZipTextField.setEditable(false);
-        phoneNumberTextField.setEditable(false);
-        saveButton.setVisible(false);
-        discardButton.setVisible(false);
     }
     
     @FXML
-    private void saveButtonClicked(){
+    private void calculateInterestButtonClicked(ActionEvent event) throws Exception{
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("CalculateInterestWindow.fxml"));
+        Parent root = loader.load();
+        
+        Scene scene = new Scene(root);
+        
+        CalculateInterestWindowController controller = loader.getController();
         Customer c = getCurrentCustomer();
+        controller.initData(c);
         
-        //TESTING TESTING TESTING
-        System.out.println("c: ");
-        System.out.println(c);
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         
+        window.setScene(scene);
+        window.show();
     }
-    
-    private void updateCurrentCustomer(){
-        Customer c = getCurrentCustomer();
-        
-    }
-    
-    //TESTING not void
-    private void generateCustomerFromFields(){
-        Customer c = new Customer();
-        c.setFirstName(firstNameTextField.getText());
-        c.setLastName(lastNameTextField.getText());
-        Address a = new Address();
-        
-        a.setStreetAddress(addressTextField.getText());
-        a.setAptNum(this.cityStateZipTextField.getText());
-       /*
-        a.setCity(city);
-        a.setState();
-        a.setZipCode();
-*/
-    }
-
-    
-    
     
     
 }

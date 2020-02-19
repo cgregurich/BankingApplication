@@ -57,7 +57,7 @@ public class AddCustomerWindowController implements Initializable {
         textFields.add(cityTextField);
         textFields.add(zipTextField);
         
-        loadStateChoiceBox();
+        loadStateComboBox();
     }   
     
     @FXML
@@ -122,6 +122,7 @@ public class AddCustomerWindowController implements Initializable {
     private boolean isPhoneNumberOnlyNumbers(){
         try{
             long phoneNumberInt = Long.parseLong(phoneNumberTextField.getText());
+            return true;
             
         } catch (NumberFormatException e){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -130,9 +131,6 @@ public class AddCustomerWindowController implements Initializable {
             alert.showAndWait();
             return false; 
         }
-        
-        return true;
-        
     }
     
     private boolean isPhoneNumberTenDigits(){
@@ -213,7 +211,7 @@ public class AddCustomerWindowController implements Initializable {
         statusLabel.setText("");
     }
     
-    private void loadStateChoiceBox(){
+    private void loadStateComboBox(){
         stateComboBox.setItems(FXCollections.observableArrayList(State.values()));
     }
     

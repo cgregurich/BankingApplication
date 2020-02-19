@@ -6,26 +6,83 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gregurichfinalproject.UpdateInfoWindowController">
    <children>
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" />
-      <VBox alignment="CENTER" layoutX="-1.0" layoutY="41.0" prefHeight="561.0" prefWidth="500.0" spacing="20.0">
+      <VBox alignment="CENTER" layoutX="-1.0" layoutY="41.0" prefHeight="561.0" prefWidth="500.0" spacing="10.0">
          <children>
-            <Label fx:id="statusLabel" text="statusLabel" />
-            <TextField fx:id="firstNameTextField" prefHeight="25.0" prefWidth="158.0" promptText="*First name" />
-            <TextField fx:id="lastNameTextField" promptText="*Last name" />
-            <TextField fx:id="phoneNumberTextField" promptText="*Phone number" />
-            <TextField fx:id="streetAddressTextField" promptText="*Street address" />
-            <TextField fx:id="secondaryAddressTextField" promptText="Apartment, suite, unit, building, floor, etc." />
-            <TextField fx:id="cityTextField" promptText="*City" />
-            <ComboBox fx:id="stateComboBox" prefHeight="25.0" prefWidth="489.0" promptText="*Select state" />
-            <TextField fx:id="zipTextField" promptText="*ZIP" />
+            <Label fx:id="statusLabel" text="statusLabel">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <VBox prefHeight="25.0" prefWidth="420.0">
+               <children>
+                  <Label text="*First name" />
+                  <TextField fx:id="firstNameTextField" onMouseClicked="#clearStatusLabel" prefHeight="25.0" prefWidth="158.0" />
+               </children>
+            </VBox>
+            <VBox prefHeight="18.0" prefWidth="420.0">
+               <children>
+                  <Label text="*Last name" />
+                  <TextField fx:id="lastNameTextField" onMouseClicked="#clearStatusLabel" />
+               </children>
+            </VBox>
+            <VBox prefHeight="0.0" prefWidth="420.0">
+               <children>
+                  <Label text="*Phone number" />
+                  <TextField fx:id="phoneNumberTextField" onMouseClicked="#clearStatusLabel" />
+               </children>
+            </VBox>
+            <VBox prefHeight="38.0" prefWidth="420.0">
+               <children>
+                  <Label text="*Street address" />
+                  <TextField fx:id="streetAddressTextField" onMouseClicked="#clearStatusLabel" />
+               </children>
+            </VBox>
+            <VBox prefHeight="43.0" prefWidth="420.0">
+               <children>
+                  <Label text="Apartment, suite, unit, building, floor, etc." />
+                  <TextField fx:id="secondaryAddressTextField" onMouseClicked="#clearStatusLabel" />
+               </children>
+            </VBox>
+            <VBox prefHeight="37.0" prefWidth="420.0">
+               <children>
+                  <Label text="*City" />
+                  <TextField fx:id="cityTextField" onMouseClicked="#clearStatusLabel" />
+               </children>
+            </VBox>
+            <VBox prefHeight="32.0" prefWidth="420.0">
+               <children>
+                  <Label text="*State" />
+                  <ComboBox fx:id="stateComboBox" onMouseClicked="#clearStatusLabel" prefHeight="25.0" prefWidth="489.0" promptText="*Select state" />
+               </children>
+            </VBox>
+            <VBox prefHeight="29.0" prefWidth="420.0">
+               <children>
+                  <Label text="*ZIP" />
+                  <TextField fx:id="zipTextField" onMouseClicked="#clearStatusLabel" />
+               </children>
+            </VBox>
+            <HBox alignment="CENTER" prefHeight="58.0" prefWidth="420.0" spacing="50.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#saveButtonClicked" text="Save" />
+                  <Button mnemonicParsing="false" onAction="#discardButtonClicked" text="Discard" />
+               </children>
+            </HBox>
          </children>
          <padding>
             <Insets bottom="20.0" left="40.0" right="40.0" top="20.0" />
          </padding>
       </VBox>
+      <Label layoutX="194.0" layoutY="19.0" text="* denotes a required field">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" />
    </children>
 </AnchorPane>
