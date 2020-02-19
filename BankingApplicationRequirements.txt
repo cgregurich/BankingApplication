@@ -4,28 +4,28 @@ Functionality:
 	~~add customers  (open new account; one account per customer -> error)
 	search customers by first and last name (can have duplicate names, but presumably not phone or address?)	
 	~~step through all customer names
-	deposit
-	withdraw
+	~~deposit
+	~~withdraw
 	calculate total interest for the year so far:
 		requests current month from user
 		displays interest (non editable)
 Display:
-	GUI (obviously)
-	display balance (non editable)
+	~~GUI (obviously)
+	~~display balance (non editable)
 		
 	
 Objects:
-	customer
-	savings account
+	~~customer
+	~~ ish savings account
 	
 Customer:
-	first name
-	last name
-	address
-	phone number
+	~~first name
+	~~last name
+	~~address
+	~~phone number
 
 Savings account:
-	owner(s)
-	account number
-	balance
-	interest rate
+	~~owner(s)
+	~~account number
+	~~balance
+	~~interest rate
