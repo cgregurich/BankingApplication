@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gregurichfinalproject.ViewCustomersWindowController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gregurichfinalproject.ViewCustomersWindowController">
    <children>
       <VBox layoutY="95.0" minHeight="-Infinity" minWidth="-Infinity">
          <children>
@@ -74,14 +74,17 @@
                   </VBox>
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#calculateInterestButtonClicked" text="Calculate Interest" />
+                        <Button fx:id="calculateInterestButton" mnemonicParsing="false" onAction="#calculateInterestButtonClicked" text="Calculate Interest" />
                      </children>
                   </VBox>
                </children>
+               <padding>
+                  <Insets top="15.0" />
+               </padding>
             </HBox>
          </children>
          <padding>
-            <Insets left="15.0" right="15.0" />
+            <Insets bottom="15.0" left="15.0" right="15.0" />
          </padding>
       </VBox>
       <Button layoutX="14.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" />
