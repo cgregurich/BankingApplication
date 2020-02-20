@@ -85,7 +85,7 @@ public class ViewCustomersWindowController implements Initializable {
     private Button openAccountButton;
     
     @FXML
-    private Button updateInfoButton;
+    private Button calculateInterestButton;
     
     
     
@@ -94,6 +94,10 @@ public class ViewCustomersWindowController implements Initializable {
         for (Customer c : customersList){
             if (c.getAccountNum().equals(currentCustomer.getAccountNum())){
                 this.currentCustomersIndex = this.customersList.indexOf(c);
+                break;
+            }
+            else{
+                this.currentCustomersIndex = 0;
             }
         }
         
@@ -242,7 +246,8 @@ public class ViewCustomersWindowController implements Initializable {
             withdrawTextField.setDisable(false);
             depositButton.setDisable(false);
             withdrawButton.setDisable(false);
-            this.openAccountButton.setDisable(true);
+            openAccountButton.setDisable(true);
+            calculateInterestButton.setDisable(false);
             
         }
         
@@ -256,7 +261,9 @@ public class ViewCustomersWindowController implements Initializable {
             withdrawTextField.setDisable(true);
             depositButton.setDisable(true);
             withdrawButton.setDisable(true);
-            this.openAccountButton.setDisable(false);
+            openAccountButton.setDisable(false);
+            calculateInterestButton.setDisable(true);
+            
             
         }
     }

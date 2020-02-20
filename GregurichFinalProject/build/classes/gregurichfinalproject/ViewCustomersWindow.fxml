@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gregurichfinalproject.ViewCustomersWindowController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gregurichfinalproject.ViewCustomersWindowController">
    <children>
       <VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0">
          <children>
@@ -105,7 +105,7 @@
                   </VBox>
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#calculateInterestButtonClicked" text="Calculate Interest" />
+                        <Button fx:id="calculateInterestButton" mnemonicParsing="false" onAction="#calculateInterestButtonClicked" text="Calculate Interest" />
                      </children>
                   </VBox>
                </children>
@@ -115,7 +115,11 @@
             </HBox>
          </children>
          <padding>
+<<<<<<< HEAD
+            <Insets bottom="15.0" left="15.0" right="15.0" />
+=======
             <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+>>>>>>> 84bda590870d667bc470ef16c4ce65a7a18ae85b
          </padding>
       </VBox>
    </children>
