@@ -51,7 +51,7 @@ public class Address {
             return false;
         }
         
-        if (isApartment && !this.aptNum.equals(a2.getAptNum())){
+        if (!this.aptNum.equals(a2.getAptNum())){
             return false;
         }
         

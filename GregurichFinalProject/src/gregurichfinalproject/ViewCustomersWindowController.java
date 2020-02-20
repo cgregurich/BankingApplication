@@ -20,7 +20,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -87,6 +89,12 @@ public class ViewCustomersWindowController implements Initializable {
     @FXML
     private Button calculateInterestButton;
     
+    @FXML
+    private Button updateInfoButton;
+    
+    @FXML
+    private Button deleteCustomerButton;
+    
     
     
    
@@ -144,7 +152,7 @@ public class ViewCustomersWindowController implements Initializable {
         
         
         //customer already has an account
-        if (isAccountOwner()){
+        if (isAccountOwner(getCurrentCustomer())){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Error opening account");
             alert.setContentText("Current customer already has an account");
@@ -164,8 +172,7 @@ public class ViewCustomersWindowController implements Initializable {
     }
     
     
-    public boolean isAccountOwner(){
-        Customer c = getCurrentCustomer();
+    public boolean isAccountOwner(Customer c){
         return !(c.getAccountNum() == null);
     }
     
@@ -224,7 +231,27 @@ public class ViewCustomersWindowController implements Initializable {
     private void displayCurrentCustomer(){
         
         if (customersList.isEmpty()){
+            clearInfoFields();
+            clearLabelsAndFields();
+            firstNameTextField.setDisable(true);
+            lastNameTextField.setDisable(true);
+            addressTextField.setDisable(true);
+            cityStateZipTextField.setDisable(true);
+            phoneNumberTextField.setDisable(true);
+            accountNumTextField.setDisable(true);
+            balanceTextField.setDisable(true);
+            depositTextField.setDisable(true);
+            withdrawTextField.setDisable(true);
+            
             statusLabel.setText("No customers found");
+            openAccountButton.setDisable(true);
+            depositButton.setDisable(true);
+            withdrawButton.setDisable(true);
+            calculateInterestButton.setDisable(true);
+            updateInfoButton.setDisable(true);
+            nextButton.setDisable(true);
+            previousButton.setDisable(true);
+            deleteCustomerButton.setDisable(true);
             return;
         }
         
@@ -236,7 +263,7 @@ public class ViewCustomersWindowController implements Initializable {
         cityStateZipTextField.setText(c.getAddress().getCityStateZip());
         phoneNumberTextField.setText(c.getPhoneNumber());
         
-        if (isAccountOwner()){
+        if (isAccountOwner(getCurrentCustomer())){
             SavingsAccount curAcct = getCurrentAccount();
             accountNumTextField.setText(curAcct.getAccountNum());
             balanceTextField.setText(curAcct.getBalanceFormatted());
@@ -267,6 +294,8 @@ public class ViewCustomersWindowController implements Initializable {
             
         }
     }
+    
+    
     
     private SavingsAccount fetchAccountByAcctNum(String acctNum){
         
@@ -405,6 +434,16 @@ public class ViewCustomersWindowController implements Initializable {
         withdrawTextField.setText("");
     }
     
+    private void clearInfoFields(){
+        firstNameTextField.clear();
+        lastNameTextField.clear();
+        addressTextField.clear();
+        cityStateZipTextField.clear();
+        phoneNumberTextField.clear();
+        accountNumTextField.clear();
+        balanceTextField.clear();
+    }
+    
     
     @FXML
     private void clearLabelsAndFields(){
@@ -440,7 +479,7 @@ public class ViewCustomersWindowController implements Initializable {
     
     @FXML
     private void updateInfoButtonClicked(ActionEvent event) throws Exception{
-        if (!this.isAccountOwner()){
+        if (!this.isAccountOwner(getCurrentCustomer())){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Error updating info");
             alert.setContentText("Only account owners can update info");
@@ -480,6 +519,41 @@ public class ViewCustomersWindowController implements Initializable {
         
         window.setScene(scene);
         window.show();
+    }
+    
+    @FXML
+    private void deleteCustomerButtonClicked(ActionEvent event) throws Exception{
+        Alert alert = new Alert(AlertType.CONFIRMATION, "Delete this customer and account?", ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+        
+        if (alert.getResult() == ButtonType.YES){
+            
+            if (isAccountOwner(getCurrentCustomer())){
+                deleteCurrentAccount();
+                deleteCurrentCustomer();
+            }
+            else{
+                deleteCurrentCustomer();
+            }
+            
+            if (currentCustomersIndex > 0){
+                currentCustomersIndex--;
+            }
+                
+            
+            refreshCustomerList();
+            displayCurrentCustomer();
+        }
+    }
+    
+    private void deleteCurrentCustomer(){
+        customerDb.deleteCustomer(getCurrentCustomer());
+        
+    }
+    
+    private void deleteCurrentAccount(){
+        accountDb.deleteAccount(getCurrentAccount());
+        
     }
     
     

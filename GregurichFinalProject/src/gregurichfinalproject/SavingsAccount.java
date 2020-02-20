@@ -5,6 +5,7 @@
  */
 package gregurichfinalproject;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Random;
 
@@ -117,8 +118,8 @@ public class SavingsAccount {
     }
     
     public String getInterestRateFormatted(){
-        NumberFormat nf = NumberFormat.getPercentInstance();
-        return nf.format(this.interestRate);
+        DecimalFormat df = new DecimalFormat("##.##%");
+        return df.format(this.interestRate);
     }
 
     public String getAccountNum() {
@@ -131,6 +132,20 @@ public class SavingsAccount {
 
     public double getBalance(){
         return this.balance;
+    }
+    
+    public double calculateInterestSoFar(Month month){
+        
+        
+        double interestYTD = interestRate * (month.getNumVal() / 12) * balance;
+        
+        return interestYTD;
+    }
+    
+    public String calculateInterestSoFarFormatted(Month month){
+        double interestYTD = calculateInterestSoFar(month);
+        NumberFormat nf = NumberFormat.getCurrencyInstance();
+        return nf.format(interestYTD);
     }
     
     

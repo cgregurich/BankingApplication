@@ -102,6 +102,21 @@ public class AccountDAO {
         }
     }
     
+    public boolean deleteAccount(SavingsAccount account){
+         String query = "DELETE FROM " +TABLE_NAME+ " WHERE accountNum = ?";
+        try (Connection connection = getConnection();
+                PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setString(1, account.getAccountNum());
+            
+            ps.executeUpdate();
+            return true;
+            
+        } catch (SQLException e){
+            System.err.println(e);
+            return false;
+        }
+    }
+    
     
     
     public List<String> getAllAccountNumbers(){

@@ -99,12 +99,13 @@
                   </VBox>
                   <VBox alignment="CENTER" minWidth="-Infinity" spacing="10.0">
                      <children>
-                        <Button fx:id="openAccountButton" mnemonicParsing="false" onAction="#openAccountButtonClicked" text="Open Account" />
                         <Button fx:id="updateInfoButton" mnemonicParsing="false" onAction="#updateInfoButtonClicked" text="Update Info" />
+                        <Button fx:id="deleteCustomerButton" mnemonicParsing="false" onAction="#deleteCustomerButtonClicked" text="Delete Customer" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
+                        <Button fx:id="openAccountButton" mnemonicParsing="false" onAction="#openAccountButtonClicked" text="Open Account" />
                         <Button fx:id="calculateInterestButton" mnemonicParsing="false" onAction="#calculateInterestButtonClicked" text="Calculate Interest" />
                      </children>
                   </VBox>

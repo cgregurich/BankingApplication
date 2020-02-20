@@ -99,27 +99,26 @@
                   </VBox>
                   <VBox alignment="CENTER" minWidth="-Infinity" spacing="10.0">
                      <children>
-                        <Button fx:id="openAccountButton" mnemonicParsing="false" onAction="#openAccountButtonClicked" text="Open Account" />
                         <Button fx:id="updateInfoButton" mnemonicParsing="false" onAction="#updateInfoButtonClicked" text="Update Info" />
+                        <Button fx:id="deleteCustomerButton" mnemonicParsing="false" onAction="#deleteCustomerButtonClicked" text="Delete Customer" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
+                        <Button fx:id="openAccountButton" mnemonicParsing="false" onAction="#openAccountButtonClicked" text="Open Account" />
                         <Button fx:id="calculateInterestButton" mnemonicParsing="false" onAction="#calculateInterestButtonClicked" text="Calculate Interest" />
                      </children>
                   </VBox>
                </children>
-               <padding>
-                  <Insets top="50.0" />
-               </padding>
+               
             </HBox>
          </children>
          <padding>
-<<<<<<< HEAD
+
             <Insets bottom="15.0" left="15.0" right="15.0" />
-=======
+
             <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
->>>>>>> 84bda590870d667bc470ef16c4ce65a7a18ae85b
+
          </padding>
       </VBox>
    </children>

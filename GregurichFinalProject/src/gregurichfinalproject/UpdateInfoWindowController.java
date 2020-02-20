@@ -338,9 +338,14 @@ public class UpdateInfoWindowController implements Initializable {
         Address a = new Address();
         a.setStreetAddress(address);
         a.setAptNum(aptNum);
+        
+        
+        
         a.setCity(city);
         a.setState(state);
         a.setZipCode(zipCode);
+        
+        
         
         return a;
     }

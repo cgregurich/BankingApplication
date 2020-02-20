@@ -177,7 +177,7 @@ public class Customer {
     of 1%. Then sets this account number to the number of the created SavingsAccount obj
     */
     public SavingsAccount openAccount(){
-        SavingsAccount newAcct = new SavingsAccount(0.01);
+        SavingsAccount newAcct = new SavingsAccount(.05);
         setAccountNum(newAcct.getAccountNum());
         return newAcct;
     }

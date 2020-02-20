@@ -189,4 +189,32 @@ public class CustomerDAO {
         }
     }
     
+    /*
+    deletes all customers in the DB Customers where all the values (except account num)
+    equal that of the param Customer
+    */
+    public boolean deleteCustomer(Customer c){
+        String query = "DELETE FROM " +TABLE_NAME+ " WHERE firstName = ? AND"
+                + " lastName = ? AND phoneNumber = ? AND streetAddress = ? AND"
+                + " aptNum = ? AND city = ? AND state = ? AND zip = ?";
+        try (Connection connection = getConnection();
+                PreparedStatement ps = connection.prepareStatement(query)){
+            ps.setString(1, c.getFirstName());
+            ps.setString(2, c.getLastName());
+            ps.setString(3, c.getPhoneNumber());
+            ps.setString(4, c.getAddress().getStreetAddress());
+            ps.setString(5, c.getAddress().getAptNum());
+            ps.setString(6, c.getAddress().getCity());
+            ps.setString(7, c.getAddress().getState());
+            ps.setString(8, c.getAddress().getZipCode());
+            
+            ps.executeUpdate();
+            return true;
+            
+        } catch (SQLException e){
+            System.err.println(e);
+            return false;
+        }
+    }
+    
 }

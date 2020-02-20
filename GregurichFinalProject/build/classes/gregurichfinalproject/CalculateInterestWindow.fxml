@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -9,15 +10,15 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="400.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="gregurichfinalproject.CalculateInterestWindowController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gregurichfinalproject.CalculateInterestWindowController">
    <children>
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backButtonClicked" text="Back" />
-      <VBox alignment="TOP_CENTER" layoutX="150.0" layoutY="186.0" prefHeight="200.0" prefWidth="100.0" spacing="25.0">
+      <VBox alignment="TOP_CENTER" layoutX="114.0" layoutY="181.0" spacing="25.0">
          <children>
-            <TextField fx:id="monthTextField" prefHeight="25.0" prefWidth="55.0" promptText="Month" />
+            <Label text="Enter month to calculate interest" />
+            <ComboBox fx:id="monthComboBox" onAction="#monthSelected" prefWidth="150.0" promptText="Select month" />
             <TextField fx:id="resultTextField" />
-            <Button mnemonicParsing="false" text="Calculate" />
+            <Button mnemonicParsing="false" onAction="#calculateButtonClicked" text="Calculate" />
          </children>
       </VBox>
       <GridPane layoutX="14.0" layoutY="57.0" prefHeight="92.0" prefWidth="221.0">
