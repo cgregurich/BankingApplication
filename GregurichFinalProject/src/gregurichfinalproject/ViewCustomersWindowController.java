@@ -40,6 +40,8 @@ public class ViewCustomersWindowController implements Initializable {
     private Label statusLabel;
     @FXML
     private Label amountLabel;
+    @FXML
+    private Label resultsLabel;
     
     @FXML
     private Button previousButton;
@@ -72,6 +74,7 @@ public class ViewCustomersWindowController implements Initializable {
     private AccountDAO accountDb = new AccountDAO();
     private List<SavingsAccount> accountsList = accountDb.getAll();
     
+    private boolean refreshLocal = false;
     
     @FXML
     private TextField depositTextField;
@@ -95,12 +98,15 @@ public class ViewCustomersWindowController implements Initializable {
     @FXML
     private Button deleteCustomerButton;
     
+    private String searchedFirst;
+    private String searchedLast;
+    
     
     
    
     public void initData(Customer currentCustomer){
         for (Customer c : customersList){
-            if (c.getAccountNum().equals(currentCustomer.getAccountNum())){
+            if (isAccountOwner(c) && c.getAccountNum().equals(currentCustomer.getAccountNum())){
                 this.currentCustomersIndex = this.customersList.indexOf(c);
                 break;
             }
@@ -108,19 +114,42 @@ public class ViewCustomersWindowController implements Initializable {
                 this.currentCustomersIndex = 0;
             }
         }
+        displayCurrentCustomer();
+    }
+    
+    public void initWithName(String first, String last){
+        if (first == null || last == null){
+            displayCurrentCustomer();
+            return;
+        }
         
+        
+        
+        this.searchedFirst = first;
+        this.searchedLast = last;
+        this.customersList = customerDb.getCustomerListByNames(first, last);
+        
+        if (this.customersList.size() > 1){
+            resultsLabel.setText("Multiple results with name " +first+ " " +last);
+        }
+        else{
+            previousButton.setDisable(true);
+            nextButton.setDisable(true);
+        }
+        
+        this.currentCustomersIndex = 0;
+        this.refreshLocal = true;
         displayCurrentCustomer();
     }
     
 
-    /**
-     * Initializes the controller class.
-     */
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
         statusLabel.setText("");
         amountLabel.setText("");
+        resultsLabel.setText("");
         firstNameTextField.setEditable(false);
         lastNameTextField.setEditable(false);
         addressTextField.setEditable(false);
@@ -128,9 +157,6 @@ public class ViewCustomersWindowController implements Initializable {
         phoneNumberTextField.setEditable(false);
         accountNumTextField.setEditable(false);
         balanceTextField.setEditable(false);
-        
-        displayCurrentCustomer();
-        
     }    
     
     
@@ -149,7 +175,6 @@ public class ViewCustomersWindowController implements Initializable {
     
     @FXML
     private void openAccountButtonClicked(){
-        
         
         //customer already has an account
         if (isAccountOwner(getCurrentCustomer())){
@@ -170,12 +195,6 @@ public class ViewCustomersWindowController implements Initializable {
         
         displayCurrentCustomer();
     }
-    
-    
-    public boolean isAccountOwner(Customer c){
-        return !(c.getAccountNum() == null);
-    }
-    
     
     @FXML
     private void previousCustomerButtonClicked(){
@@ -219,8 +238,26 @@ public class ViewCustomersWindowController implements Initializable {
         displayCurrentCustomer();
     }
     
+    
+    public boolean isAccountOwner(Customer c){
+        return !(c.getAccountNum() == null);
+    }
+    
+    
+    
+    
     private void refreshCustomerList(){
-        this.customersList = customerDb.getAll();
+        if (refreshLocal){
+            
+            //THIS PROBABLY WONT WORK FOR MULTIPLE RESULTS -- FIX!
+            this.customersList = customerDb.getCustomerListByNames(searchedFirst, searchedLast);
+        }
+        
+        else{
+            this.customersList = customerDb.getAll();
+        }
+            
+        
     }
     
     private Customer getCurrentCustomer(){
@@ -255,7 +292,8 @@ public class ViewCustomersWindowController implements Initializable {
             return;
         }
         
-        Customer c = getCurrentCustomer();        
+        Customer c = getCurrentCustomer();
+        
         
         firstNameTextField.setText(c.getFirstName());
         lastNameTextField.setText(c.getLastName());
@@ -290,12 +328,8 @@ public class ViewCustomersWindowController implements Initializable {
             withdrawButton.setDisable(true);
             openAccountButton.setDisable(false);
             calculateInterestButton.setDisable(true);
-            
-            
         }
     }
-    
-    
     
     private SavingsAccount fetchAccountByAcctNum(String acctNum){
         
@@ -423,6 +457,7 @@ public class ViewCustomersWindowController implements Initializable {
     private void clearLabels(){
         statusLabel.setText("");
         amountLabel.setText("");
+        resultsLabel.setText("");
     }
     
     private void clearAmountLabel(){

@@ -217,4 +217,51 @@ public class CustomerDAO {
         }
     }
     
+    public List<Customer> getCustomerListByNames(String firstName, String lastName){
+        String query = "SELECT * FROM " +TABLE_NAME
+                + " WHERE firstName = ? AND lastName = ?";
+        
+        try (Connection connection = getConnection();
+            PreparedStatement ps = connection.prepareStatement(query)){
+            
+            ps.setString(1, firstName);
+            ps.setString(2, lastName);
+            
+            ResultSet rs = ps.executeQuery();
+            
+            List<Customer> customersList = new ArrayList<>();
+            
+            
+            while (rs.next()){
+                
+                Customer c = new Customer();
+                
+                String first = rs.getString("firstName");
+                String last = rs.getString("lastName");
+                String phone = rs.getString("phoneNumber");
+                String street = rs.getString("streetAddress");
+                String aptNum = rs.getString("aptNum");
+                String city = rs.getString("city");
+                String state = rs.getString("state");
+                String zip = rs.getString("zip");
+                String accountNum = rs.getString("accountNum");
+                
+                c.setFirstName(first);
+                c.setLastName(last);
+                c.setPhoneNumber(phone);
+                Address a = new Address(street, aptNum, city, state, zip);
+                c.setAddress(a);
+                c.setAccountNum(accountNum);
+                
+                customersList.add(c);
+            }
+            
+            return customersList;
+            
+        } catch (SQLException e){
+            System.err.println(e);
+            return null;
+        }
+    }
+    
 }

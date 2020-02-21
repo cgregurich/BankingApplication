@@ -30,9 +30,6 @@ public class MainWindowController implements Initializable {
     @FXML Button exitButton;
     
     
-
-    
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -52,6 +49,28 @@ public class MainWindowController implements Initializable {
     
     @FXML
     private void viewCustomersButtonClicked(ActionEvent event) throws Exception{
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ViewCustomersWindow.fxml"));
+        Parent root = loader.load();
+        
+        Scene scene = new Scene(root);
+        
+        ViewCustomersWindowController controller = loader.getController();
+        controller.initWithName(null, null);
+        
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        window.setScene(scene);
+        window.show();
+        
+        
+        
+        
+        
+        
+        
+        //dont need it?
+        /*
         Parent root = FXMLLoader.load(getClass().getResource("ViewCustomersWindow.fxml"));
         
         Scene scene = new Scene(root);
@@ -60,6 +79,7 @@ public class MainWindowController implements Initializable {
         
         window.setScene(scene);
         window.show();
+*/
         
     }
     
@@ -81,5 +101,7 @@ public class MainWindowController implements Initializable {
         
         stage.close();
     }
+    
+    
             
 }

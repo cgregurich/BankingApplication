@@ -76,6 +76,23 @@ public class CalculateInterestWindowController implements Initializable {
     
     @FXML
     private void backButtonClicked(ActionEvent event) throws Exception{
+        
+        
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ViewCustomersWindow.fxml"));
+        Parent root = loader.load();
+        
+        Scene scene = new Scene(root);
+        
+        ViewCustomersWindowController controller = loader.getController();
+        controller.initWithName(c.getFirstName(), c.getLastName());
+        
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        
+        window.setScene(scene);
+        window.show();
+        
+        /*
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("ViewCustomersWindow.fxml"));
         Parent root = loader.load();
@@ -89,6 +106,7 @@ public class CalculateInterestWindowController implements Initializable {
         
         window.setScene(scene);
         window.show();
+*/
     }
     
     @FXML
