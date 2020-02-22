@@ -43,12 +43,23 @@ public class CalculateInterestWindowController implements Initializable {
     
     private Month month;
     
+    private boolean fromView;
     
-    public void initData(Customer customer){
+    
+    public void initFromView(Customer customer){
         c = customer;
         AccountDAO accountDb = new AccountDAO();
         this.account = accountDb.getByAcctNum(customer.getAccountNum());
         populateWindow();
+        fromView = true;
+    }
+    
+    public void initFromSearch(Customer customer){
+        c = customer;
+        AccountDAO accountDb = new AccountDAO();
+        this.account = accountDb.getByAcctNum(customer.getAccountNum());
+        populateWindow();
+        fromView = false;
     }
         
     private void populateWindow(){
@@ -77,36 +88,25 @@ public class CalculateInterestWindowController implements Initializable {
     @FXML
     private void backButtonClicked(ActionEvent event) throws Exception{
         
-        
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("ViewCustomersWindow.fxml"));
         Parent root = loader.load();
-        
+
         Scene scene = new Scene(root);
-        
+
         ViewCustomersWindowController controller = loader.getController();
-        controller.initWithName(c.getFirstName(), c.getLastName());
         
+        if (fromView){
+            controller.initData(c);
+        }
+        else{
+            controller.initWithName(c.getFirstName(), c.getLastName());
+        }
+
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        
+
         window.setScene(scene);
         window.show();
-        
-        /*
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("ViewCustomersWindow.fxml"));
-        Parent root = loader.load();
-        
-        Scene scene = new Scene(root);
-        
-        ViewCustomersWindowController controller = loader.getController();
-        controller.initData(c);
-        
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        
-        window.setScene(scene);
-        window.show();
-*/
     }
     
     @FXML

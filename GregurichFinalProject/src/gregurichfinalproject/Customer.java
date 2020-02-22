@@ -5,6 +5,8 @@
  */
 package gregurichfinalproject;
 
+import java.util.Random;
+
 /**
  *
  * @author colin
@@ -177,9 +179,16 @@ public class Customer {
     of 1%. Then sets this account number to the number of the created SavingsAccount obj
     */
     public SavingsAccount openAccount(){
-        SavingsAccount newAcct = new SavingsAccount(.05);
+        SavingsAccount newAcct = new SavingsAccount(generateRandomInterestRate());
         setAccountNum(newAcct.getAccountNum());
         return newAcct;
+    }
+    
+    private double generateRandomInterestRate(){
+        Random r = new Random();
+        int i = r.nextInt(276) + 25;
+        double rate = new Double(i) / 10000;
+        return rate;
     }
     
     

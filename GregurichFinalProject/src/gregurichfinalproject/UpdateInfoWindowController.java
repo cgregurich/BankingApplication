@@ -57,12 +57,11 @@ public class UpdateInfoWindowController implements Initializable {
     
     private List<TextField> fieldsList;
     
+    private boolean fromView;
     
     
     
-    
-    public void initData(Customer customer){
-        
+    public void initFromView(Customer customer){
         //sets class var to customer object passed when the window was opened
         this.initialCustomer = customer;
         
@@ -72,9 +71,20 @@ public class UpdateInfoWindowController implements Initializable {
         //calls method to fill the text fields with the param's info
         populateWindow();
         populateFieldsList();
+        this.fromView = true;
+    }
+    
+    public void initFromSearch(Customer customer){
+        //sets class var to customer object passed when the window was opened
+        this.initialCustomer = customer;
         
+        //also sets currentCustomer to this parameter
+        this.currentCustomer = initialCustomer;
         
-        
+        //calls method to fill the text fields with the param's info
+        populateWindow();
+        populateFieldsList();
+        this.fromView = false;
     }
     
     
@@ -271,6 +281,15 @@ public class UpdateInfoWindowController implements Initializable {
         
         ViewCustomersWindowController controller = loader.getController();
         Customer c = currentCustomer;
+        
+        if (fromView){
+            controller.initData(c);
+        }
+        
+        else{
+            controller.initWithName(c.getFirstName(), c.getLastName());
+        }
+        
         controller.initData(c);
         
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();

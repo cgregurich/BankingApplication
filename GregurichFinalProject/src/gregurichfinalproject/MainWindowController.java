@@ -63,24 +63,6 @@ public class MainWindowController implements Initializable {
         window.setScene(scene);
         window.show();
         
-        
-        
-        
-        
-        
-        
-        //dont need it?
-        /*
-        Parent root = FXMLLoader.load(getClass().getResource("ViewCustomersWindow.fxml"));
-        
-        Scene scene = new Scene(root);
-        
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        
-        window.setScene(scene);
-        window.show();
-*/
-        
     }
     
     @FXML

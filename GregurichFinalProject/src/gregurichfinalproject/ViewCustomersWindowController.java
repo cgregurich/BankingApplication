@@ -100,6 +100,7 @@ public class ViewCustomersWindowController implements Initializable {
     
     private String searchedFirst;
     private String searchedLast;
+    private boolean fromSearch;
     
     
     
@@ -114,6 +115,9 @@ public class ViewCustomersWindowController implements Initializable {
                 this.currentCustomersIndex = 0;
             }
         }
+        
+        this.fromSearch = false;
+        
         displayCurrentCustomer();
     }
     
@@ -123,7 +127,7 @@ public class ViewCustomersWindowController implements Initializable {
             return;
         }
         
-        
+        this.fromSearch = true;
         
         this.searchedFirst = first;
         this.searchedLast = last;
@@ -163,14 +167,30 @@ public class ViewCustomersWindowController implements Initializable {
     
     @FXML
     private void backButtonClicked(ActionEvent event) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
         
-        Scene scene = new Scene(root);
         
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        if (fromSearch){
+            Parent root = FXMLLoader.load(getClass().getResource("SearchCustomersWindow.fxml"));
         
-        window.setScene(scene);
-        window.show();
+            Scene scene = new Scene(root);
+
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+            window.setScene(scene);
+            window.show();
+        }
+        
+        else{
+            Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+        
+            Scene scene = new Scene(root);
+
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+            window.setScene(scene);
+            window.show();
+        }
+        
+            
     }
     
     @FXML
@@ -530,7 +550,13 @@ public class ViewCustomersWindowController implements Initializable {
         
         UpdateInfoWindowController controller = loader.getController();
         Customer c = getCurrentCustomer(); 
-        controller.initData(c);
+        
+        if (fromSearch){
+            controller.initFromSearch(c);
+        }
+        else{
+            controller.initFromView(c);
+        }
         
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         
@@ -548,7 +574,15 @@ public class ViewCustomersWindowController implements Initializable {
         
         CalculateInterestWindowController controller = loader.getController();
         Customer c = getCurrentCustomer();
-        controller.initData(c);
+        
+        if (fromSearch){
+            controller.initFromSearch(c);
+        }
+        
+        else{
+            controller.initFromView(c);
+        }
+        
         
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         

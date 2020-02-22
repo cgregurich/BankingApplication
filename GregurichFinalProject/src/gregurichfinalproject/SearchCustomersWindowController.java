@@ -105,6 +105,6 @@ public class SearchCustomersWindowController implements Initializable {
     
     @FXML
     private void clearStatusLabel(){
-        statusLabel.setVisible(false);
+        statusLabel.setText("");
     }
 }
