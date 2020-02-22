@@ -106,6 +106,7 @@ public class UpdateInfoWindowController implements Initializable {
         zipTextField.setText(initialCustomer.getAddress().getZipCode());
     }
     
+    
     private void populateFieldsList(){
         fieldsList = new ArrayList<>();
         fieldsList.add(firstNameTextField);
@@ -162,6 +163,9 @@ public class UpdateInfoWindowController implements Initializable {
         
     }
     
+    /*
+    validates information in the entire window
+    */
     private boolean isInfoValid(){
         if (isMissingFields()){
             return false;
@@ -184,6 +188,12 @@ public class UpdateInfoWindowController implements Initializable {
         }
     }
     
+    /*
+    checks if any of the fields are empty
+    If any are, displays an error messgae
+    Doesn't include secondaryAddressTextField in this check because it is not a 
+    required field
+    */
     private boolean isMissingFields(){
         for (TextField field : this.fieldsList){
             if (field != secondaryAddressTextField && field.getText().isEmpty()){
@@ -197,10 +207,15 @@ public class UpdateInfoWindowController implements Initializable {
         return false;
     }
     
+    
     private boolean isPhoneNumberValid(){
         return isPhoneNumberTenDigits() && isPhoneNumberOnlyNumbers();
     }
     
+    /*
+    checks if phone number text field is ten digits
+    if it's not then displays an error message
+    */
     private boolean isPhoneNumberTenDigits(){
         if (phoneNumberTextField.getText().length() == 10){
             return true;
@@ -214,6 +229,10 @@ public class UpdateInfoWindowController implements Initializable {
         }
     }
     
+    /*
+    checks if phone number text field contains only numbers
+    if it doesn't then displays an error message
+    */
     private boolean isPhoneNumberOnlyNumbers(){
         try{
             long phoneNumberInt = Long.parseLong(phoneNumberTextField.getText());
@@ -227,7 +246,10 @@ public class UpdateInfoWindowController implements Initializable {
             return false; 
         }
     }
-    
+    /*
+    checks if a state is selected
+    if not then displays an error message
+    */
     private boolean isStateSelected(){
         if (stateComboBox.getValue() == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -239,10 +261,17 @@ public class UpdateInfoWindowController implements Initializable {
         return true;
     }
     
+    /*
+    checks if zip code text field is valid using helper methods
+    */
     private boolean isZipCodeValid(){
         return isZipCodeOnlyNumbers() && isZipCodeFiveDigits();
     }
     
+    /*
+    checks if zip code text field contains only numbers
+    if not then displays an error message
+    */
     private boolean isZipCodeOnlyNumbers(){
         try{
             int zipCodeInt = Integer.parseInt(zipTextField.getText());
@@ -256,6 +285,10 @@ public class UpdateInfoWindowController implements Initializable {
         return true;
     }
     
+    /*
+    checks if zip code text field is five digits
+    if not then displays an error message
+    */
     private boolean isZipCodeFiveDigits(){
         if (zipTextField.getText().length() == 5){
             return true;
@@ -270,7 +303,12 @@ public class UpdateInfoWindowController implements Initializable {
         }
     }
     
-    
+    /*
+    opens view window
+    Depending on value of bool fromView, it will open the window displaying all
+    customers
+    Or will open the window only displaying customers with the given names
+    */
     private void goBackToViewCustomers(ActionEvent event) throws Exception{
         
         FXMLLoader loader = new FXMLLoader();
@@ -399,6 +437,11 @@ public class UpdateInfoWindowController implements Initializable {
         return !currentCustomer.equalsByValue(createUpdatedCustomer());
     }
     
+    /*
+    Method used to display the saved phone number without hyphens, since when
+    entering a customer's phone number, it must be ten digits and contain
+    only numbers (i.e. can't include hyphens when entering data)
+    */
     public String dehyphenatePhoneNumber(String phoneNumber){
         if (phoneNumber.length() == 10){
             return phoneNumber;

@@ -39,7 +39,7 @@ public class AddCustomerWindowController implements Initializable {
     @FXML private ComboBox stateComboBox;
     @FXML private TextField zipTextField;
     
-    //TODO
+   
     @FXML private Label statusLabel;
     
     private List<TextField> textFields = new ArrayList<>();
@@ -59,6 +59,7 @@ public class AddCustomerWindowController implements Initializable {
         
         loadStateComboBox();
     }   
+    
     
     @FXML
     private void addCustomerButtonClicked(){
@@ -90,6 +91,10 @@ public class AddCustomerWindowController implements Initializable {
         }
     }
     
+    /*
+    returns true if any of the window's textfields have no text
+    displays an error message is any are missing
+    */
     private boolean isMissingFields(){
         for (TextField field : this.textFields){
             if (field != secondaryAddressTextField && field.getText().isEmpty()){
@@ -103,6 +108,10 @@ public class AddCustomerWindowController implements Initializable {
         return false;
     }
     
+    /*
+    returns true if user has selected a state
+    displays an error message if no state is selected
+    */
     private boolean isStateSelected(){
         if (stateComboBox.getValue() == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -115,10 +124,18 @@ public class AddCustomerWindowController implements Initializable {
         
     }
     
+    /*
+    returns true if the phone number text field is valid
+    validity is checked using helper methods
+    */
     private boolean isPhoneNumberValid(){        
         return isPhoneNumberTenDigits() && isPhoneNumberOnlyNumbers();
     }
     
+    /*
+    returns true if the phone number text field contains only numbers
+    if not then displays an error message
+    */
     private boolean isPhoneNumberOnlyNumbers(){
         try{
             long phoneNumberInt = Long.parseLong(phoneNumberTextField.getText());
@@ -133,6 +150,10 @@ public class AddCustomerWindowController implements Initializable {
         }
     }
     
+    /*
+    returns true if the phone number text field is 10 digits
+    if not displays an error message
+    */
     private boolean isPhoneNumberTenDigits(){
         if (phoneNumberTextField.getText().length() == 10){
             return true;
@@ -147,10 +168,18 @@ public class AddCustomerWindowController implements Initializable {
         }
     }
     
+    /*
+    returns true if the zip code text field is a valid zip code
+    uses helper methods to check validity
+    */
     private boolean isZipCodeValid(){
         return isZipCodeOnlyNumbers() && isZipCodeFiveDigits();
     }
     
+    /*
+    returns true if the zip code text field contains only numbers 
+    if not displays an error message
+    */
     private boolean isZipCodeOnlyNumbers(){
         try{
             int zipCodeInt = Integer.parseInt(zipTextField.getText());
@@ -164,6 +193,10 @@ public class AddCustomerWindowController implements Initializable {
         return true;
     }
     
+    /*
+    returns true if zip code text field is five digits
+    if not displays an error message
+    */
     private boolean isZipCodeFiveDigits(){
         
         if (zipTextField.getText().length() == 5){
@@ -179,6 +212,9 @@ public class AddCustomerWindowController implements Initializable {
         }
     }
     
+    /*
+    returns to the main menu
+    */
     @FXML
     private void backButtonClicked(ActionEvent event) throws Exception{
          Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
@@ -191,6 +227,9 @@ public class AddCustomerWindowController implements Initializable {
         window.show();
     }
     
+    /*
+    clears all editable nodes 
+    */
     @FXML
     private void clearButtonClicked(){
         statusLabel.setText("");
@@ -206,20 +245,30 @@ public class AddCustomerWindowController implements Initializable {
         
     }
     
+    
     @FXML
     private void clearStatusLabel(){
         statusLabel.setText("");
     }
     
+    /*
+    fills the combo box node with all values from enum State
+    */
     private void loadStateComboBox(){
         stateComboBox.setItems(FXCollections.observableArrayList(State.values()));
     }
     
+    /*
+    returns the selected state in the combo box
+    */
     private String getSelectedState(){
         String state = stateComboBox.getValue().toString();
         return state;
     }
     
+    /*
+    creates a Customer object from the current text in the text fields
+    */
     private Customer createCustomer(){
         String firstName = firstNameTextField.getText();
         String lastName = lastNameTextField.getText();
@@ -231,6 +280,9 @@ public class AddCustomerWindowController implements Initializable {
         return c;
     }
     
+    /*
+    creates an Address object from the current text in the text fields
+    */
     private Address createAddress(){
         String address = streetAddressTextField.getText();
         String aptNum = secondaryAddressTextField.getText();
@@ -247,7 +299,5 @@ public class AddCustomerWindowController implements Initializable {
         
         return a;
     }
-    
-    
     
 }

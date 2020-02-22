@@ -43,6 +43,9 @@ public class SearchCustomersWindowController implements Initializable {
         statusLabel.setText("");
     }    
     
+    /*
+    Opens main menu window
+    */
     @FXML
     private void backButtonClicked(ActionEvent event) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
@@ -55,11 +58,14 @@ public class SearchCustomersWindowController implements Initializable {
         window.show();
     }
     
+    /*
+    First checks if their is a user that exists with the name's of that of the 
+    text fields
+    If not, displays a message to user
+    If there is, it opens the view window showing all customers with that name
+    */
     @FXML
     private void searchButtonClicked(ActionEvent event) throws Exception{
-        
-        
-        
         String first = firstNameTextField.getText();
         String last = lastNameTextField.getText();
         
@@ -83,6 +89,10 @@ public class SearchCustomersWindowController implements Initializable {
         window.show();
     }
     
+    /*
+    checks if either of the text fields are empty
+    As long as one of the fields is empty, the search button can't be clicked
+    */
     @FXML
     private void checkFields(){
         if (isEitherFieldEmpty()){
@@ -93,10 +103,15 @@ public class SearchCustomersWindowController implements Initializable {
         }
     }
     
+    
     private boolean isEitherFieldEmpty(){
         return firstNameTextField.getText().isEmpty() || lastNameTextField.getText().isEmpty();   
     }
     
+    /*
+    checks if there are any customers in the DB with the first and last name 
+    in the param
+    */
     private boolean customerNotFound(String first, String last){
         CustomerDAO customerDb = new CustomerDAO();
         

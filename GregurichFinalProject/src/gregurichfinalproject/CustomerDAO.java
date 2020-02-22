@@ -217,6 +217,11 @@ public class CustomerDAO {
         }
     }
     
+    
+    /*
+    returns a list of all Customers from the DB with the first and last name
+    of the params
+    */
     public List<Customer> getCustomerListByNames(String firstName, String lastName){
         String query = "SELECT * FROM " +TABLE_NAME
                 + " WHERE firstName = ? AND lastName = ?";

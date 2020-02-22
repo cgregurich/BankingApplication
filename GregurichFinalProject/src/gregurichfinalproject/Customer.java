@@ -184,6 +184,12 @@ public class Customer {
         return newAcct;
     }
     
+    /*
+    For the sake of showing how the interest calculation functionality works,
+    customers' interest rate is a randomly generated percentage between 0.25% and 3.0%
+    Obviously this doesn't reflect a real world scenario but it shows that Customers
+    can have varying interest rates
+    */
     private double generateRandomInterestRate(){
         Random r = new Random();
         int i = r.nextInt(276) + 25;

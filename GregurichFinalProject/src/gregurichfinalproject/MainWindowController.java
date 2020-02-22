@@ -35,6 +35,9 @@ public class MainWindowController implements Initializable {
         // TODO
     }    
     
+    /*
+    opens the add customer window
+    */
     @FXML
     private void addCustomerButtonClicked(ActionEvent event) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("AddCustomerWindow.fxml"));
@@ -47,6 +50,9 @@ public class MainWindowController implements Initializable {
         window.show();
     }
     
+    /*
+    opens the view customers window
+    */
     @FXML
     private void viewCustomersButtonClicked(ActionEvent event) throws Exception{
         FXMLLoader loader = new FXMLLoader();
@@ -65,6 +71,9 @@ public class MainWindowController implements Initializable {
         
     }
     
+    /*
+    opens the search customers window
+    */
     @FXML
     private void searchCustomersButtonClicked(ActionEvent event) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("SearchCustomersWindow.fxml"));
@@ -77,6 +86,9 @@ public class MainWindowController implements Initializable {
         window.show();
     }
     
+    /*
+    closes the program
+    */
     @FXML
     private void exitButtonClicked(){
         Stage stage = (Stage) exitButton.getScene().getWindow();

@@ -34,6 +34,10 @@ public class AccountDAO {
         }
     }
     
+    
+    /*
+    returns a list containing all savings accounts in the database
+    */
     public List<SavingsAccount> getAll(){
         String query = "SELECT * from " +TABLE_NAME;
         
@@ -63,6 +67,9 @@ public class AccountDAO {
         }
     }
     
+    /*
+    adds the param savings account to the database
+    */
     public boolean add(SavingsAccount acct){
         String query = "INSERT INTO " +TABLE_NAME
                 + " (accountNum, balance, interestRate)"
@@ -83,6 +90,10 @@ public class AccountDAO {
         }
     }
     
+    /*
+    changes the balance of the account in the DB matching the param to the param's
+    balance
+    */
     public boolean updateBalance(SavingsAccount a){
         String query = "UPDATE " +TABLE_NAME
                 + " SET balance = ?"
@@ -102,6 +113,10 @@ public class AccountDAO {
         }
     }
     
+    /*
+    deletes all accounts with the param account's account number
+    (will only be one account because account nums are unique)
+    */
     public boolean deleteAccount(SavingsAccount account){
          String query = "DELETE FROM " +TABLE_NAME+ " WHERE accountNum = ?";
         try (Connection connection = getConnection();
@@ -118,7 +133,9 @@ public class AccountDAO {
     }
     
     
-    
+    /*
+    returns a list of all the savings accounts' account numbers from the DB
+    */
     public List<String> getAllAccountNumbers(){
         List<SavingsAccount> accounts = this.getAll();
         List<String> accountNums = new ArrayList<>();

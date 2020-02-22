@@ -22,7 +22,6 @@ public class SavingsAccount {
     private AccountDAO accountDb = new AccountDAO();
 
     public SavingsAccount(double interestRate) {
-        
         this.accountNum = generateAccountNum();
         this.balance = 0.00;
         this.interestRate = interestRate;
@@ -59,9 +58,6 @@ public class SavingsAccount {
             return false;
         }
     }
-    
-    
-
    
     /*
     returns the balance as a currency
@@ -134,14 +130,20 @@ public class SavingsAccount {
         return this.balance;
     }
     
+    
+    /*
+    returns the total interest generated based off the param month
+    */
     public double calculateInterestSoFar(Month month){
-        
         
         double interestYTD = interestRate * (month.getNumVal() / 12) * balance;
         
         return interestYTD;
     }
     
+    /*
+    returns the value of method calculateInterestSoFar as a formatted currency
+    */
     public String calculateInterestSoFarFormatted(Month month){
         double interestYTD = calculateInterestSoFar(month);
         NumberFormat nf = NumberFormat.getCurrencyInstance();

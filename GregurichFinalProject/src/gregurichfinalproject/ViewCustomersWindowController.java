@@ -11,7 +11,6 @@ import java.net.URL;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,7 +22,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -33,6 +31,12 @@ import javafx.stage.Stage;
  *
  * @author colin
  */
+
+/*
+this class is used both for displaying all customers (through View All choice)
+and for displaying search results (through Search Customers choice)
+*/
+
 public class ViewCustomersWindowController implements Initializable {
     
     
@@ -68,6 +72,7 @@ public class ViewCustomersWindowController implements Initializable {
     
     private CustomerDAO customerDb = new CustomerDAO();
     
+    //list to hold all customers, in order to step through them
     private List<Customer> customersList = customerDb.getAll();
     private int currentCustomersIndex = 0;
     
@@ -104,7 +109,10 @@ public class ViewCustomersWindowController implements Initializable {
     
     
     
-   
+   /*
+    method used to "remember" what the last Customer was when opening a new window
+    (eg. calculate interest or update info)
+    */
     public void initData(Customer currentCustomer){
         for (Customer c : customersList){
             if (isAccountOwner(c) && c.getAccountNum().equals(currentCustomer.getAccountNum())){
@@ -121,6 +129,10 @@ public class ViewCustomersWindowController implements Initializable {
         displayCurrentCustomer();
     }
     
+    /*
+    method used to display only Customers with given first and last name
+    i.e. originally user searched for customers by name, not by clicking view all
+    */
     public void initWithName(String first, String last){
         if (first == null || last == null){
             displayCurrentCustomer();
@@ -148,9 +160,11 @@ public class ViewCustomersWindowController implements Initializable {
     
 
     
+    /*
+    clears all labels and makes all fields uneditable
+    */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
         statusLabel.setText("");
         amountLabel.setText("");
         resultsLabel.setText("");
@@ -165,10 +179,12 @@ public class ViewCustomersWindowController implements Initializable {
     
     
     
+    /*
+    goes back to whatever window user originally was on
+    i.e. search or view all
+    */
     @FXML
     private void backButtonClicked(ActionEvent event) throws Exception{
-        
-        
         if (fromSearch){
             Parent root = FXMLLoader.load(getClass().getResource("SearchCustomersWindow.fxml"));
         
@@ -193,28 +209,22 @@ public class ViewCustomersWindowController implements Initializable {
             
     }
     
+    /*
+    opens an account for the current customer
+    No error message is needed if customer already has an account
+    because open account button is disabled for account owners
+    */
     @FXML
     private void openAccountButtonClicked(){
-        
-        //customer already has an account
-        if (isAccountOwner(getCurrentCustomer())){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Error opening account");
-            alert.setContentText("Current customer already has an account");
-            alert.showAndWait();   
-        }
-        
-        //customer doesn't have an account
-        else{
-            Customer c = getCurrentCustomer();
-            SavingsAccount newAcct = c.openAccount();
-            
-            accountDb.add(newAcct);
-            customerDb.updateAccountNum(c);
-        }
+        Customer c = getCurrentCustomer();
+        SavingsAccount newAcct = c.openAccount();
+
+        accountDb.add(newAcct);
+        customerDb.updateAccountNum(c);
         
         displayCurrentCustomer();
     }
+    
     
     @FXML
     private void previousCustomerButtonClicked(){
@@ -268,8 +278,6 @@ public class ViewCustomersWindowController implements Initializable {
     
     private void refreshCustomerList(){
         if (refreshLocal){
-            
-            //THIS PROBABLY WONT WORK FOR MULTIPLE RESULTS -- FIX!
             this.customersList = customerDb.getCustomerListByNames(searchedFirst, searchedLast);
         }
         
@@ -279,12 +287,22 @@ public class ViewCustomersWindowController implements Initializable {
             
         
     }
-    
+    /*
+    returns the Customer in the list at the current index
+    */
     private Customer getCurrentCustomer(){
         Customer c = customersList.get(currentCustomersIndex);
         return c;
     }
     
+    /*
+    displays the current customer
+    if there are no customers in the DB, then all nodes and disabled and 
+    it tells the user no customers are found
+    Otherwise displays the current customer
+    If the customer has an account, displays account information
+    If not, account information nodes are disabled
+    */
     private void displayCurrentCustomer(){
         
         if (customersList.isEmpty()){
@@ -351,6 +369,9 @@ public class ViewCustomersWindowController implements Initializable {
         }
     }
     
+    /*
+    returns the SavingsAccount with the given account number
+    */
     private SavingsAccount fetchAccountByAcctNum(String acctNum){
         
         refreshAccountsList();
@@ -364,16 +385,28 @@ public class ViewCustomersWindowController implements Initializable {
         return null;
     }
     
+    
+    /*
+    returns the SavingsAccount of the current customer 
+    */
     private SavingsAccount getCurrentAccount(){
         Customer c = getCurrentCustomer();
         SavingsAccount a = fetchAccountByAcctNum(c.getAccountNum());
         return a;
     }
     
+    /*
+    reloads the list of all accounts; this is used when a deposit or withdrawal
+    has occurred
+    */
     private void refreshAccountsList(){
         this.accountsList = accountDb.getAll();
     }
     
+    /*
+    withdraws money from the customer's account if it possible
+    If it is, displays a successful message
+    */
     @FXML
     private void withdrawButtonClicked(){
         if (isWithdrawNumber()){
@@ -389,10 +422,17 @@ public class ViewCustomersWindowController implements Initializable {
         }   
     }
     
+    /*
+    checks validity of withdraw amount
+    */
     private boolean isWithdrawValid(Double amount){
         return isAmountValid(amount) && !isAmountZero(amount) && withdrawFromAccount(amount);
     }
     
+    /*
+    attempts to withdraw the given amount from the current customers account
+    if it fails, displays an error message
+    */
     private boolean withdrawFromAccount(Double amount){
         SavingsAccount curAcct = getCurrentAccount();
         if (curAcct.withdraw(amount)){
@@ -407,8 +447,9 @@ public class ViewCustomersWindowController implements Initializable {
         }
     }
     
-    
-    
+    /*
+    helper method to validate withdraw entry
+    */
     private boolean isWithdrawNumber(){
         String withdrawStr = withdrawTextField.getText();
         try{
@@ -423,6 +464,10 @@ public class ViewCustomersWindowController implements Initializable {
         }
     }
     
+    /*
+    deposits money to the customer's account
+    Displays a message depending on success or failure
+    */
     @FXML
     private void depositButtonClicked(){
         //check if entry is valid
@@ -442,10 +487,16 @@ public class ViewCustomersWindowController implements Initializable {
         }
     }
     
+    /*
+    checks validity of deposit amount
+    */
     private boolean isDepositValid(Double amount){
         return isAmountValid(amount) && !isAmountZero(amount) && depositToAccount(amount);
     }
     
+    /*
+    helper method to validate that the deposit amount contains only numbers
+    */
     private boolean isDepositNumber(){
         String depositStr = depositTextField.getText();
         try{
@@ -461,17 +512,22 @@ public class ViewCustomersWindowController implements Initializable {
         return true;
     }
     
+    /*
+    deposits the given amount to the current customer's account
+    */
     private boolean depositToAccount(Double amount){
         SavingsAccount curAcct = getCurrentAccount();
         curAcct.deposit(amount);
         return accountDb.updateBalance(curAcct);
     }
     
+    /*
+    returns a formatted String of the given amount in currency format
+    */
     private String formatAmount(Double amount){
         NumberFormat nf = NumberFormat.getCurrencyInstance();
         return nf.format(amount);
     }
-    
     
     @FXML
     private void clearLabels(){
@@ -499,7 +555,6 @@ public class ViewCustomersWindowController implements Initializable {
         balanceTextField.clear();
     }
     
-    
     @FXML
     private void clearLabelsAndFields(){
         clearLabels();
@@ -507,6 +562,10 @@ public class ViewCustomersWindowController implements Initializable {
         clearDepositAndWithdrawFields();
     }
     
+    /*
+    helper method to validate the decimal places of given amount
+    (must be 3 decimal places or less)
+    */
     private boolean isAmountValid(Double amount){
         if (BigDecimal.valueOf(amount).scale() <= 2){
             return true;
@@ -521,6 +580,9 @@ public class ViewCustomersWindowController implements Initializable {
         }
     }
     
+    /*
+    helper method to validate that the given amount isn't zero
+    */
     private boolean isAmountZero(Double amount){
         if (amount == 0){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -532,6 +594,13 @@ public class ViewCustomersWindowController implements Initializable {
         return false;
     }
     
+    /*
+    opens the update info window
+    If user originally searched, it calls the appropriate method to remember 
+    the name that was searched
+    If originally from view all, it calls the appropriate method to remember to display
+    all customers when going back
+    */
     @FXML
     private void updateInfoButtonClicked(ActionEvent event) throws Exception{
         if (!this.isAccountOwner(getCurrentCustomer())){
@@ -564,6 +633,13 @@ public class ViewCustomersWindowController implements Initializable {
         window.show();
     }
     
+    /*
+    opens the calculate interest window
+    If user originally searched, it calls the appropriate method to remember 
+    the name that was searched
+    If originally from view all, it calls the appropriate method to remember to display
+    all customers when going back
+    */
     @FXML
     private void calculateInterestButtonClicked(ActionEvent event) throws Exception{
         FXMLLoader loader = new FXMLLoader();
@@ -590,6 +666,13 @@ public class ViewCustomersWindowController implements Initializable {
         window.show();
     }
     
+    /*
+    deletes the current customer
+    First prompts user to confirm their choice
+    If user says yes, then customer is deleted from the database (and their account,
+    if they had one, is deleted from the accounts database)
+    Everything is then refreshed and the customers are displayed again
+    */
     @FXML
     private void deleteCustomerButtonClicked(ActionEvent event) throws Exception{
         Alert alert = new Alert(AlertType.CONFIRMATION, "Delete this customer and account?", ButtonType.YES, ButtonType.NO);
@@ -615,15 +698,18 @@ public class ViewCustomersWindowController implements Initializable {
         }
     }
     
+    /*
+    helper method to delete the current customer from the database
+    */
     private void deleteCurrentCustomer(){
         customerDb.deleteCustomer(getCurrentCustomer());
         
     }
     
+    /*
+    helper method to delete the current customer's account from the database
+    */
     private void deleteCurrentAccount(){
         accountDb.deleteAccount(getCurrentAccount());
-        
     }
-    
-    
 }

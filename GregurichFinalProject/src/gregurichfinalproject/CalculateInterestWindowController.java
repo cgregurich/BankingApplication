@@ -43,9 +43,14 @@ public class CalculateInterestWindowController implements Initializable {
     
     private Month month;
     
+    //bool to know where the user originally came from: search or view all
     private boolean fromView;
     
     
+    /*
+    method called when user clicked on calculate interest from the view all window
+    Populates the window with the param's information
+    */
     public void initFromView(Customer customer){
         c = customer;
         AccountDAO accountDb = new AccountDAO();
@@ -54,6 +59,10 @@ public class CalculateInterestWindowController implements Initializable {
         fromView = true;
     }
     
+    /*
+    method called when user clicked on calculate interest from the results of a search
+    Populates the window with the param's information
+    */
     public void initFromSearch(Customer customer){
         c = customer;
         AccountDAO accountDb = new AccountDAO();
@@ -62,6 +71,9 @@ public class CalculateInterestWindowController implements Initializable {
         fromView = false;
     }
         
+    /*
+    sets the node's to the account's information
+    */
     private void populateWindow(){
         acctNumTextField.setText(account.getAccountNum());
         balanceTextField.setText(account.getBalanceFormatted());
@@ -69,13 +81,14 @@ public class CalculateInterestWindowController implements Initializable {
         loadMonthComboBox();
     }
     
+    /*
+    fills the combo box with all the values of enum Month
+    */
     private void loadMonthComboBox(){
         monthComboBox.setItems(FXCollections.observableArrayList(Month.values()));
     }
     
-    /**
-     * Initializes the controller class.
-     */
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         resultTextField.setDisable(true);
@@ -85,6 +98,11 @@ public class CalculateInterestWindowController implements Initializable {
         interestTextField.setEditable(false);
     }
     
+    /*
+    returns to the view window
+    Depending on value of fromView, it will display all customers, or only the ones 
+    that match the customer's first and last name
+    */
     @FXML
     private void backButtonClicked(ActionEvent event) throws Exception{
         
@@ -109,11 +127,15 @@ public class CalculateInterestWindowController implements Initializable {
         window.show();
     }
     
+    
     @FXML
     private void monthSelected(){
         this.month = Month.valueOf(monthComboBox.getValue().toString());
     }
     
+    /*
+    calculates the customer's interest based off their selected month
+    */
     @FXML
     private void calculateButtonClicked(){
         String interestYTD = account.calculateInterestSoFarFormatted(month);
