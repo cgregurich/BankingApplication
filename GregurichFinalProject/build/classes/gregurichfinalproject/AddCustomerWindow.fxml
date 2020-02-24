@@ -26,14 +26,14 @@
                </children>
             </HBox>
             <Label fx:id="statusLabel" text="statusLabel" />
-            <TextField fx:id="firstNameTextField" onMouseClicked="#clearStatusLabel" prefHeight="25.0" prefWidth="158.0" promptText="*First name" />
-            <TextField fx:id="lastNameTextField" onMouseClicked="#clearStatusLabel" promptText="*Last name" />
-            <TextField fx:id="phoneNumberTextField" onMouseClicked="#clearStatusLabel" promptText="*Phone number" />
-            <TextField fx:id="streetAddressTextField" onMouseClicked="#clearStatusLabel" promptText="*Street address" />
-            <TextField fx:id="secondaryAddressTextField" onMouseClicked="#clearStatusLabel" promptText="Apartment, suite, unit, building, floor, etc." />
-            <TextField fx:id="cityTextField" onMouseClicked="#clearStatusLabel" promptText="*City" />
+            <TextField fx:id="firstNameTextField" onDragDetected="#clearStatusLabel" onMouseClicked="#clearStatusLabel" prefHeight="25.0" prefWidth="158.0" promptText="*First name" />
+            <TextField fx:id="lastNameTextField" onDragDetected="#clearStatusLabel" onMouseClicked="#clearStatusLabel" promptText="*Last name" />
+            <TextField fx:id="phoneNumberTextField" onDragDetected="#clearStatusLabel" onMouseClicked="#clearStatusLabel" promptText="*Phone number" />
+            <TextField fx:id="streetAddressTextField" onDragDetected="#clearStatusLabel" onMouseClicked="#clearStatusLabel" promptText="*Street address" />
+            <TextField fx:id="secondaryAddressTextField" onDragDetected="#clearStatusLabel" onMouseClicked="#clearStatusLabel" promptText="Apartment, suite, unit, building, floor, etc." />
+            <TextField fx:id="cityTextField" onDragDetected="#clearStatusLabel" onMouseClicked="#clearStatusLabel" promptText="*City" />
             <ComboBox fx:id="stateComboBox" onMouseClicked="#clearStatusLabel" prefHeight="25.0" prefWidth="489.0" promptText="*Select state" />
-            <TextField fx:id="zipTextField" onMouseClicked="#clearStatusLabel" promptText="*ZIP" />
+            <TextField fx:id="zipTextField" onDragDetected="#clearStatusLabel" onMouseClicked="#clearStatusLabel" promptText="*ZIP" />
             <Button mnemonicParsing="false" onAction="#addCustomerButtonClicked" text="Add Customer" />
          </children>
          <padding>
