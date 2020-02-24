@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gregurichfinalproject.DataAccessObjects;
+package gregurichfinalproject;
 
 import gregurichfinalproject.SavingsAccount;
 import java.sql.Connection;

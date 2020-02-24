@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gregurichfinalproject.Controllers;
+package gregurichfinalproject;
 
 import gregurichfinalproject.Address;
 import gregurichfinalproject.Customer;
-import gregurichfinalproject.DataAccessObjects.CustomerDAO;
 import gregurichfinalproject.State;
 import java.net.URL;
 import java.util.ArrayList;

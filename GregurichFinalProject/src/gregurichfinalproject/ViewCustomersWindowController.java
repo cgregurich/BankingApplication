@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gregurichfinalproject.Controllers;
+package gregurichfinalproject;
 
 
 import gregurichfinalproject.Customer;
-import gregurichfinalproject.DataAccessObjects.CustomerDAO;
-import gregurichfinalproject.DataAccessObjects.AccountDAO;
 import gregurichfinalproject.SavingsAccount;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -150,7 +148,7 @@ public class ViewCustomersWindowController implements Initializable {
         this.customersList = customerDb.getCustomerListByNames(first, last);
         
         if (this.customersList.size() > 1){
-            resultsLabel.setText("Multiple results with name " +first+ " " +last);
+            resultsLabel.setText("Multiple results found");
         }
         else{
             previousButton.setDisable(true);

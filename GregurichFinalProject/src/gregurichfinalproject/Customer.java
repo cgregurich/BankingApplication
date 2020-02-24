@@ -5,7 +5,6 @@
  */
 package gregurichfinalproject;
 
-import gregurichfinalproject.DataAccessObjects.AccountDAO;
 import java.util.Random;
 
 /**

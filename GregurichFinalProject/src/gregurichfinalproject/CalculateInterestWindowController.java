@@ -3,10 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gregurichfinalproject.Controllers;
+package gregurichfinalproject;
 
 import gregurichfinalproject.Customer;
-import gregurichfinalproject.DataAccessObjects.AccountDAO;
 import gregurichfinalproject.Month;
 import gregurichfinalproject.SavingsAccount;
 import java.net.URL;
