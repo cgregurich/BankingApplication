@@ -3,8 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gregurichfinalproject;
+package gregurichfinalproject.Controllers;
 
+import gregurichfinalproject.Customer;
+import gregurichfinalproject.DataAccessObjects.AccountDAO;
+import gregurichfinalproject.Month;
+import gregurichfinalproject.SavingsAccount;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;

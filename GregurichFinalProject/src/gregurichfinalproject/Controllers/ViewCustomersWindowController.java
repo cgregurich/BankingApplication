@@ -3,9 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gregurichfinalproject;
+package gregurichfinalproject.Controllers;
 
 
+import gregurichfinalproject.Customer;
+import gregurichfinalproject.DataAccessObjects.CustomerDAO;
+import gregurichfinalproject.DataAccessObjects.AccountDAO;
+import gregurichfinalproject.SavingsAccount;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.text.NumberFormat;
